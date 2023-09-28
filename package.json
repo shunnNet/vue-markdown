@@ -1,0 +1,29 @@
+{
+  "name": "@crazydos/vue-markdown",
+  "type": "module",
+  "version": "0.1.0",
+  "description": "Vue component for rendering markdown with unified",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "scripts": {
+    "build": "tsc"
+  },
+  "keywords": [],
+  "author": "shunnNet",
+  "license": "MIT",
+  "engines": {
+    "node": ">=16.0.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.2.2"
+  },
+  "dependencies": {
+    "deepmerge": "^4.3.1",
+    "property-information": "^6.3.0",
+    "rehype-sanitize": "^6.0.0",
+    "remark-parse": "^10.0.2",
+    "remark-rehype": "^10.1.0",
+    "unified": "^10.1.2",
+    "vue": "^3.3.4"
+  }
+}
