@@ -351,11 +351,11 @@ scoped slot 和 customAttrs 中，都可以接收額外的參數，除了 markdo
 attributes aliases 可以用在 `scoped slot` 或是 `customAttrs` 的設定。
 一般來說，如果你是使用 alises 進行設定，或是插入 slot， aliases 的設定會先於他對應的 html tag。
 
-`heading`: `h1`, `h2`, `h3`, `h4`, `h5`, `h6`
-`list`: `ol`, `ul`
-`list-item`: `li`
-`inline-code`: `code` which is inline
-`block-code`: `code` which is block code in `pre` tag
+- `heading`: `h1`, `h2`, `h3`, `h4`, `h5`, `h6`
+- `list`: `ol`, `ul`
+- `list-item`: `li`
+- `inline-code`: `code` which is inline
+- `block-code`: `code` which is block code in `pre` tag
 
 
 ## Reference

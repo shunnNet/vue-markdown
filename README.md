@@ -346,11 +346,11 @@ In both scoped slots and `customAttrs`, you can receive additional parameters. B
 ## doc: attributes aliases
 Attribute aliases can be used in the configuration of both `scoped slot` and `customAttrs`. Generally, if you are using aliases for configuration or inserting slots, the alias configuration will take precedence over its corresponding HTML tag.
 
-`heading`: `h1`, `h2`, `h3`, `h4`, `h5`, `h6`
-`list`: `ol`, `ul`
-`list-item`: `li`
-`inline-code`: `code` which is inline
-`block-code`: `code` which is block code in `pre` tag
+- `heading`: `h1`, `h2`, `h3`, `h4`, `h5`, `h6`
+- `list`: `ol`, `ul`
+- `list-item`: `li`
+- `inline-code`: `code` which is inline
+- `block-code`: `code` which is block code in `pre` tag
 
 
 ## Reference
