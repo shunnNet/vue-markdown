@@ -290,7 +290,7 @@ Here's an example configuration that prevents the rendering of all HTML tags, di
 ```vue
 <script setup lang="ts">
 import { ref } from 'vue'
-import VueMarkdown, { SanitizeOptions } from '@crazydos/vue-remark'
+import VueMarkdown, { SanitizeOptions } from '@crazydos/vue-markdown'
 
 const sanitizeOption: SanitizeOptions = {
   // Please pass the parameters of rehype-sanitize into the sanitizeOptions:

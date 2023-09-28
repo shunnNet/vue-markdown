@@ -294,7 +294,7 @@ const markdown = ref(`
 ```vue
 <script setup lang="ts">
 import { ref } from 'vue'
-import VueMarkdown, { SanitizeOptions } from '@crazydos/vue-remark'
+import VueMarkdown, { SanitizeOptions } from '@crazydos/vue-markdown'
 
 const sanitizeOption: SanitizeOptions = {
   // 請在 sanitizeOptions 中傳入 rehype-sanitize 的參數
