@@ -2,6 +2,9 @@
   "include": [
     "src/**/*"
   ],
+  "exclude": [
+    "playground/**/*",
+  ],
   "compilerOptions": {
     "target": "es2017",
     "module": "Node16",
