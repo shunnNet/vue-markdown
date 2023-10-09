@@ -257,6 +257,8 @@ In the following example, we write Vue-like slot syntax in Markdown and can inse
 
 Currently, it does not support Vue template syntax like `v-bind` (supporting this would be a bit more challenging).
 
+> NOTE: Before `v0.2.0`,please use `<slot name="custom />"` to specify slot name
+
 ```vue
 <script setup>
 import { ref } from 'vue'
@@ -266,7 +268,7 @@ import remarkRaw from 'rehype-raw'
 const markdown = ref(`
 ## Hello Slot
 
-<slot name="custom" msg="Insert from vue component"></slot>
+<slot slot-name="custom" msg="Insert from vue component"></slot>
 `)
 </script>
 

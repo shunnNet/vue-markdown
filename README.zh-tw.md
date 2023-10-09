@@ -261,6 +261,8 @@ npm install rehype-raw@6.1.1
 
 目前不支援 `v-bind` 等 vue template 語法 (要支援會比較困難一點)。
 
+> NOTE: 在 `v0.2.0` 之前，請用 `<slot name="custom />"` 設定 slot 名稱
+
 ```vue
 <script setup>
 import { ref } from 'vue'
@@ -270,7 +272,7 @@ import remarkRaw from 'rehype-raw'
 const markdown = ref(`
 ## Hello Slot
 
-<slot name="custom" msg="Insert from vue component"></slot>
+<slot slot-name="custom" msg="Insert from vue component"></slot>
 `)
 </script>
 
