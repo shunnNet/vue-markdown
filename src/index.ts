@@ -163,8 +163,9 @@ export default defineComponent({
 
                 break
               case 'slot':
-                if (typeof node.properties.name === 'string') {
-                  aliasList.push(node.properties.name)
+                if (typeof node.properties['slot-name'] === 'string') {
+                  aliasList.push(node.properties['slot-name'])
+                  delete node.properties['slot-name']
                 }
                 break
 
