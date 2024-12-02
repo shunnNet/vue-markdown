@@ -330,6 +330,23 @@ In both scoped slots and `customAttrs`, you can receive additional parameters. B
   - `language`: `string`。represent language. e.g: `js`, `sh`, `md` ....
   - `languageOriginal`: `string`. It's typically in the form of `language-` followed by the language, for example, `language-js`, `language-sh`. Similar to the language parameter, but language provides a simpler representation.
   - `inline`: `boolean`，`inline-code` or `block-code`
+  - `content`: `string`. A string which is text content of the code. (**v0.3.0+**)
+
+    ```vue
+    <!-- For example -->
+    <template>
+      <VueMarkdown :markdown="markdown">
+        <template #code="{ children, ...props}">
+          <MyCustomCodeBlock :code="props.content" :lang="props.language" />
+          <!-- Or -->
+          <code>
+            <component :is="children" />
+          </code>
+        </template>
+      </VueMarkdown>
+    </template>
+    ```
+
 
 - `th`, `td`, `tr`:
   - `isHead`: `boolean`。Is it in `thead`.
