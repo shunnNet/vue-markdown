@@ -3,7 +3,7 @@ import { unified } from 'unified'
 import remarkParse from 'remark-parse'
 import remarkRehype from 'remark-rehype'
 import rehypeSanitize, { defaultSchema, Options } from 'rehype-sanitize'
-import { RootContent, Root, Element } from 'hast'
+import { RootContent, Root, Element, Text } from 'hast'
 import { html, find } from 'property-information'
 import deepmerge, { Options as DeepMergeOptions } from 'deepmerge'
 
@@ -123,13 +123,18 @@ export default defineComponent({
                 props.level = parseFloat(node.tagName.slice(1))
                 aliasList.push('heading')
                 break
-
+              // TODO: maybe use <pre> instead for customizing from <pre> not <code> ?
               case 'code':
                 props.languageOriginal = Array.isArray(props['class'])
                   ? props['class'].find((cls) => cls.startsWith('language-'))
                   : ''
                 props.language = props.languageOriginal ? props.languageOriginal.replace('language-', '') : ''
                 props.inline = 'tagName' in parent && parent.tagName !== 'pre'
+                
+                // when tagName is code, it definitely has children and the first child is text
+                // https://github.com/syntax-tree/mdast-util-to-hast/blob/main/lib/handlers/code.js
+                props.content = (node.children[0] as Text).value
+
                 aliasList.push(props.inline ? 'inline-code' : 'block-code')
                 break
               case 'thead':
