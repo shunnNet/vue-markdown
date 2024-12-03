@@ -1,0 +1,20 @@
+{
+  "eslint.useFlatConfig": true,
+  "editor.defaultFormatter": "EditorConfig.EditorConfig",
+  "[vue]": {
+    "editor.defaultFormatter": "EditorConfig.EditorConfig"
+  },
+  "[javascript]": {
+    "editor.defaultFormatter": "vscode.typescript-language-features"
+  },
+  "[ignore]": {
+    "editor.defaultFormatter": "foxundermoon.shell-format"
+  },
+  "[shellscript]": {
+    "editor.defaultFormatter": "foxundermoon.shell-format"
+  },
+  "editor.codeActionsOnSave": {
+    "source.fixAll": "never",
+    "source.fixAll.eslint": "explicit"
+  }
+}

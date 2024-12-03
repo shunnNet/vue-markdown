@@ -6,7 +6,10 @@
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "scripts": {
-    "build": "tsc"
+    "prepare": "husky",
+    "lint": "eslint",
+    "build": "pnpm --filter @crazydos/vue-markdown unbuild",
+    "stub": "pnpm --filter @crazydos/vue-markdown unbuild --stub"
   },
   "repository": "https://github.com/shunnNet/vue-markdown",
   "bugs": {
@@ -22,18 +25,15 @@
   "author": "shunnNet",
   "license": "MIT",
   "engines": {
-    "node": ">=16.0.0"
+    "node": ">=20.0.0"
   },
   "devDependencies": {
-    "typescript": "^5.2.2"
-  },
-  "dependencies": {
-    "deepmerge": "^4.3.1",
-    "property-information": "^6.3.0",
-    "rehype-sanitize": "^6.0.0",
-    "remark-parse": "^10.0.2",
-    "remark-rehype": "^10.1.0",
-    "unified": "^10.1.2",
-    "vue": "^3.3.4"
+    "@eslint/js": "^9.9.1",
+    "@stylistic/eslint-plugin": "^2.6.4",
+    "eslint-plugin-vue": "^9.27.0",
+    "husky": "^9.1.5",
+    "lint-staged": "^15.2.9",
+    "typescript": "^5.3.3",
+    "typescript-eslint": "^8.2.0"
   }
 }

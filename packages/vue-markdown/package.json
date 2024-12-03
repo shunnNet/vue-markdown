@@ -1,0 +1,53 @@
+{
+  "name": "@crazydos/vue-markdown",
+  "type": "module",
+  "version": "0.3.0",
+  "description": "Vue component for rendering markdown with unified",
+  "main": "dist/index.cjs",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.cjs",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "scripts": {
+    "build": "unbuild",
+    "stub": "unbuild --stub",
+    "prepare": "husky"
+  },
+  "repository": "https://github.com/shunnNet/vue-markdown",
+  "bugs": {
+    "url": "https://github.com/shunnNet/vue-markdown/issues"
+  },
+  "keywords": [
+    "vue",
+    "markdown",
+    "unified",
+    "remark",
+    "rehype"
+  ],
+  "author": "shunnNet",
+  "license": "MIT",
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "devDependencies": {
+    "@types/hast": "^3.0.4",
+    "@types/unist": "^3.0.3",
+    "unbuild": "^2.0.0"
+  },
+  "dependencies": {
+    "deepmerge": "^4.3.1",
+    "property-information": "^6.3.0",
+    "rehype-sanitize": "^6.0.0",
+    "remark-parse": "^10.0.2",
+    "remark-rehype": "^10.1.0",
+    "unified": "^10.1.2"
+  },
+  "peerDependencies": {
+    "vue": "^3.0.0"
+  }
+}

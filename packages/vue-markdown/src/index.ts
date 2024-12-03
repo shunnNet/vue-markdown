@@ -3,7 +3,7 @@ import { unified } from 'unified'
 import remarkParse from 'remark-parse'
 import remarkRehype from 'remark-rehype'
 import rehypeSanitize, { defaultSchema, Options } from 'rehype-sanitize'
-import { RootContent, Root, Element, Text } from 'hast'
+import type { RootContent, Root, Element, Text } from 'hast'
 import { html, find } from 'property-information'
 import deepmerge, { Options as DeepMergeOptions } from 'deepmerge'
 
@@ -13,6 +13,7 @@ type Context = {
   listItemIndex: number
   currentContext?: string
 }
+
 type Attributes = Record<string, any>
 type CustomAttrsValue = Record<string, any>
 type CustomAttrsFunctionValue = (node: Element, combinedAttrs: Attributes) => Record<string, CustomAttrsValue>
@@ -66,11 +67,11 @@ export default defineComponent({
                 deepmerge(
                   defaultSchema,
                   props.sanitizeOptions.sanitizeOptions || {},
-                  props.sanitizeOptions.mergeOptions || {}
+                  props.sanitizeOptions.mergeOptions || {},
                 ),
               ],
             ]
-          : []
+          : [],
       )
 
     const computeCustomAttrs = (node: Element, aliasList: AliasList, combinedAttrs: Attributes) => {
@@ -126,11 +127,11 @@ export default defineComponent({
               // TODO: maybe use <pre> instead for customizing from <pre> not <code> ?
               case 'code':
                 props.languageOriginal = Array.isArray(props['class'])
-                  ? props['class'].find((cls) => cls.startsWith('language-'))
+                  ? props['class'].find(cls => cls.startsWith('language-'))
                   : ''
                 props.language = props.languageOriginal ? props.languageOriginal.replace('language-', '') : ''
                 props.inline = 'tagName' in parent && parent.tagName !== 'pre'
-                
+
                 // when tagName is code, it definitely has children and the first child is text
                 // https://github.com/syntax-tree/mdast-util-to-hast/blob/main/lib/handlers/code.js
                 props.content = (node.children[0] as Text).value
@@ -218,7 +219,7 @@ export default defineComponent({
       return h(
         'div',
         attrs,
-        parseChildren(hast.children, { listDepth: -1, listOrdered: false, listItemIndex: -1 }, hast)
+        parseChildren(hast.children, { listDepth: -1, listOrdered: false, listItemIndex: -1 }, hast),
       )
     }
   },
