@@ -8,7 +8,7 @@ import {
   VNodeProps,
   VNode,
 } from 'vue'
-import { unified, Preset, PluggableList } from 'unified'
+import { unified, PluggableList } from 'unified'
 import remarkParse from 'remark-parse'
 import remarkRehype from 'remark-rehype'
 import rehypeSanitize, { defaultSchema, Options } from 'rehype-sanitize'
@@ -164,16 +164,20 @@ export type TVueMarkdownProps = {
    * These plugins will be used between `remark-parse` and `remark-rehype`.
    *
    * @see https://github.com/remarkjs/remark?tab=readme-ov-file#plugins
+   *
+   * @default []
    */
-  remarkPlugins?: Preset | PluggableList
+  remarkPlugins?: PluggableList
   /**
    * rehype plugins
    *
    * These plugins will be used after `remark-rehype` but before `rehype-sanitize`.
    *
-   * @see https://github.com/remarkjs/remark?tab=readme-ov-file#plugins
+   * @see https://github.com/remarkjs/remark-rehype?tab=readme-ov-file#related
+   *
+   * @default []
    */
-  rehypePlugins?: Preset | PluggableList
+  rehypePlugins?: PluggableList
   /**
    * Whether to sanitize the HTML content. (use `rehype-sanitize`)
    *
@@ -186,6 +190,8 @@ export type TVueMarkdownProps = {
    * Options for `rehype-sanitize`
    *
    * @see https://github.com/rehypejs/rehype-sanitize?tab=readme-ov-file#options
+   *
+   * @default { allowDangerousHtml: true }
    */
   sanitizeOptions?: SanitizeOptions
 
@@ -193,6 +199,8 @@ export type TVueMarkdownProps = {
    * Options for `rehype-parse`
    *
    * @see https://github.com/remarkjs/remark-rehype?tab=readme-ov-file#options
+   *
+   * @default {}
    */
   rehypeOptions?: Omit<TRehypeOptions, 'file'>
 }
