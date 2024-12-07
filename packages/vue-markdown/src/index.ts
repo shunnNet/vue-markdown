@@ -348,7 +348,7 @@ const vueMarkdownImpl = defineComponent({
                 break
               case 'slot':
                 if (typeof node.properties['slot-name'] === 'string') {
-                  aliasList.push(node.properties['slot-name'])
+                  aliasList.push('s-' + node.properties['slot-name'])
                   delete node.properties['slot-name']
                 }
                 break
