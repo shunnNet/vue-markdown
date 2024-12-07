@@ -43,9 +43,9 @@
     "deepmerge": "^4.3.1",
     "property-information": "^6.3.0",
     "rehype-sanitize": "^6.0.0",
-    "remark-parse": "^10.0.2",
-    "remark-rehype": "^10.1.0",
-    "unified": "^10.1.2"
+    "remark-parse": "^11.0.0",
+    "remark-rehype": "^11.1.1",
+    "unified": "^11.0.5"
   },
   "peerDependencies": {
     "vue": "^3.0.0"
