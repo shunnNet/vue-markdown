@@ -15,8 +15,7 @@
   },
   "scripts": {
     "build": "unbuild",
-    "stub": "unbuild --stub",
-    "prepare": "husky"
+    "stub": "unbuild --stub"
   },
   "repository": "https://github.com/shunnNet/vue-markdown",
   "bugs": {
@@ -29,7 +28,10 @@
     "remark",
     "rehype"
   ],
-  "author": "shunnNet",
+  "author": {
+    "name": "shunnNet",
+    "url": "https://github.com/shunnNet"
+  },
   "license": "MIT",
   "engines": {
     "node": ">=20.0.0"

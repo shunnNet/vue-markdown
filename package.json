@@ -3,13 +3,12 @@
   "type": "module",
   "version": "0.3.0",
   "description": "Vue component for rendering markdown with unified",
-  "main": "lib/index.js",
-  "types": "lib/index.d.ts",
+  "main": "index.js",
   "scripts": {
     "prepare": "husky",
     "lint": "eslint",
-    "build": "pnpm --filter @crazydos/vue-markdown unbuild",
-    "stub": "pnpm --filter @crazydos/vue-markdown unbuild --stub"
+    "build": "pnpm --filter @crazydos/vue-markdown build",
+    "stub": "pnpm --filter @crazydos/vue-markdown stub"
   },
   "repository": "https://github.com/shunnNet/vue-markdown",
   "bugs": {
@@ -22,7 +21,10 @@
     "remark",
     "rehype"
   ],
-  "author": "shunnNet",
+  "author": {
+    "name": "shunnNet",
+    "url": "https://github.com/shunnNet"
+  },
   "license": "MIT",
   "engines": {
     "node": ">=20.0.0"
