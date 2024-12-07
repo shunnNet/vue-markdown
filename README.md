@@ -1,15 +1,18 @@
 # @crazydos/vue-markdown
+[![npm version](https://img.shields.io/npm/v/@crazydos/vue-markdown.svg)](https://www.npmjs.com/package/@crazydos/vue-markdown)
+[![npm downloads](https://img.shields.io/npm/dm/@crazydos/vue-markdown.svg)](https://www.npmjs.com/package/@crazydos/vue-markdown)
+[![License](https://img.shields.io/github/license/nuxt/nuxt.svg)](https://github.com/shunnNet/vue-markdown/blob/main/LICENSE)
+
 [繁體中文](./README.zh-tw.md)
 
-This is a package that provide Vue 3+ component to render markdown content with `unified` pipeline.
+This is a package that provide Vue 3+ component to render markdown content with [`unified`](https://github.com/unifiedjs/unified) pipeline.
 
 And is referenced from [`react-markdown`](https://github.com/remarkjs/react-markdown).
-
 
 - [@crazydos/vue-markdown](#crazydosvue-markdown)
   - [Feature](#feature)
   - [Install](#install)
-  - [About unified plugins](#about-unified-plugins)
+  - [Unified plugins version](#unified-plugins-version)
   - [Usages](#usages)
     - [Basic](#basic)
     - [Rendering `GFM`](#rendering-gfm)
@@ -20,16 +23,24 @@ And is referenced from [`react-markdown`](https://github.com/remarkjs/react-mark
     - [Security](#security)
   - [doc: `scoped slot` and `custom attrs`](#doc-scoped-slot-and-custom-attrs)
   - [doc: attributes aliases](#doc-attributes-aliases)
+    - [doc: code content example](#doc-code-content-example)
   - [Reference](#reference)
+  - [License](#license)
 
 ## Feature
-- Render markdown content
-- Support unfied `remark` and `rehype` plugins for customization
-- Can customize attributes of html tags (e.g: class, target, rel ....)
-- Can use custom template for rendering tag by vue `scoped slot`
-- Support `<slot>` in markdown content (need `rehype-raw`)
-- Prevent unsafe html by `rehype-sanitize` (optional)
+- 🌴 Use [unified](https://github.com/unifiedjs/unified) to render Markdown (CommonMark)
+- Supports rendering of additional elements (i.e: GFM: `tables`, `footnotes`, `task lists` etc.) through [remark](https://github.com/remarkjs/remark) and [rehype](https://github.com/rehypejs/rehype) plugins.
+- :hammer_and_wrench: Allows customization of tag attributes for markdown elements. (i.e: `class`, `target`, `rel` etc.)
+- 🛃 Enables customization of markdown element rendering through Vue `scoped slot`.
+- 🚀 Support rendering Vue component in markdown (need `rehype-raw`) 
+- 🛡️ Safely renders markdown to prevent harmful content by `rehype-sanitize` 
 
+> [!TIP]
+> If this package has been helpful to you, feel free to [support me on Buy Me a Coffee](https://buymeacoffee.com/shunnnet) ~
+
+<a href="https://buymeacoffee.com/shunnnet" target="_blank" rel="noopener noreferrer">
+  <img width="150" src="https://cdn.buymeacoffee.com/buttons/v2/default-green.png" alt="Buy Me A Coffee" />
+</a>
 
 
 ## Install
@@ -37,14 +48,20 @@ And is referenced from [`react-markdown`](https://github.com/remarkjs/react-mark
 npm install @crazydos/vue-markdown
 ```
 
-## About unified plugins
-Recently, the unified ecosystem is undergoing updates for its plugins. This may result in version incompatibility issues, leading to unexpected runtime errors or problems with Typescript. `vue-markdown` uses `unified 10`, so please ensure that the unified plugin you intend to use corresponds to `unified 10`.
+## Unified plugins version
+`vue-markdown` uses `unified 11`. so please ensure that the unified plugin you intend to use corresponds to `unified 11`.
 
 Here are the recommended versions for the plugins:
 
-- rehype-raw: `6.1.1`
-- remark-gfm: `3.0.1`
-- others: not tested....
+- `rehype-raw`: `^7.0.0`
+- `remark-gfm`: `^4.0.0`
+- `remark-math`: `^6.0.0`
+- `rehype-katex`: `^7.0.1`
+- `remark-toc`: `^9.0.0`
+- ...
+
+For more usage examples and detailed plugin configuration, please refer to the [usage examples](https://github.com/shunnNet/vue-markdown/tree/main/examples).
+
 
 ## Usages
 
@@ -65,13 +82,14 @@ const markdown = ref('## Hello World')
 ```
 
 ### Rendering `GFM`
-This package uses the `unified` pipeline to render Markdown. By default, it only supports basic Markdown syntax (CommonMark). If you need support for other Markdown syntax, you'll need to insert the corresponding `unified` plugin.
+By default, `vue-markdown` only supports basic Markdown syntax (CommonMark). If you need support for other Markdown syntax, you'll need to insert the corresponding `unified` plugin.
 
-For features like tables, footnotes, task lists, etc., you need to include the `remark-gfm` plugin. (If you need support for other Markdown syntax like math, please use plugins as well.)
+For features like `tables`, `footnotes`, `task lists`, etc., you need to include the `remark-gfm` plugin. (If you need support for other Markdown syntax like math, please use plugins as well.)
 
 You can use the `remark-plugins` prop to pass in remark plugins.
+
 ```sh
-npm install remark-gfm@3.0.1
+npm install remark-gfm
 ```
 
 ```vue
@@ -92,6 +110,8 @@ const markdown = ref(`## Hello World
   <VueMarkdown :markdown="markdown" :remark-plugins="[remarkGfm]" />
 </template>
 ```
+
+<!-- For more usage examples and detailed plugin configuration, please refer to the [usage examples](https://github.com/shunnNet/vue-markdown/tree/main/examples). -->
 
 ### Custom attributes
 You can customize tags for individual HTML elements, for example, by adding default classes or setting attributes like `target`, `rel`, `lazyload`, etc. The customAttrs will be passed into Vue's `h` function, so it will have the same effect as passing attributes to a `h`. Please refer to [Vue's official documentation](https://vuejs.org/guide/extras/render-function.html) to understand the effects of different data types when passed to the `h` function.
@@ -250,14 +270,15 @@ You can use the `<slot>` syntax in Markdown, but you need to configure the follo
 
 
 ```sh
-npm install rehype-raw@6.1.1
+npm install rehype-raw
 ```
 
 In the following example, we write Vue-like slot syntax in Markdown and can insert this slot from the parent component. At the same time, you can obtain slot props.
 
 Currently, it does not support Vue template syntax like `v-bind` (supporting this would be a bit more challenging).
 
-> NOTE: Before `v0.2.0`,please use `<slot name="custom />"` to specify slot name
+> [!WARNING] 
+> Before `v0.2.0`,please use `<slot name="custom" />` to specify slot name
 
 ```vue
 <script setup>
@@ -275,9 +296,12 @@ const markdown = ref(`
 <template>
   <!-- simple usage -->
   <VueMarkdown :markdown="markdown" :rehype-plugins="[remarkRaw]" :sanitize="false">
-    <template #custom="{ msg }">
+    
+    <!-- use 's-' + 'slot-name' -->
+    <template #s-custom="{ msg }">
       <span> {{ msg }} </span>
     </template>
+
   </VueMarkdown>
 </template>
 ```
@@ -323,56 +347,57 @@ const sanitizeOption: SanitizeOptions = {
 ## doc: `scoped slot` and `custom attrs`
 In both scoped slots and `customAttrs`, you can receive additional parameters. Besides the HTML attributes that can be set in Markdown, `vue-markdown` also provides additional parameters.
 
-- `h1` ~ `h6`, `heading`: 
-  - `level`: `number`，represent heading level
+| Tag                                 | Parameter                          | Type      | Description                                                                                                                                                                                  |
+| ----------------------------------- | ---------------------------------- | --------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| All Elements                        | Any HTML attributes on the element | string    | `alt`, `title`, etc...                                                                                                                                                                       |
+| `h1` ~ `h6`, `heading`              | `level`                            | `number`  | Represents heading level                                                                                                                                                                     |
+| `h1` ~ `h6`, `heading`              | `level`                            | `number`  | Represents heading level                                                                                                                                                                     |
+| `code`, `inline-code`, `block-code` | `language`                         | `string`  | Represents language. e.g: `js`, `sh`, `md` ....                                                                                                                                              |
+|                                     | `languageOriginal`                 | `string`  | Typically in the form of `language-` followed by the language, for example, `language-js`, `language-sh`. Similar to the language parameter, but language provides a simpler representation. |
+|                                     | `inline`                           | `boolean` | inline code or block code                                                                                                                                                                    |
+|                                     | `content`                          | `string`  | A string which is text content of the code. (**v0.3.0+**). [see code example](#doc-code-content-example)                                                                                     |
+| `th`, `td`, `tr`                    | `isHead`                           | `boolean` | Indicates if it is in `thead`.                                                                                                                                                               |
+| `list`, `ol`, `ul`                  | `ordered`                          | `boolean` | Indicates if it is an `ordered-list` or not.                                                                                                                                                 |
+|                                     | `depth`                            | `number`  | In nested lists, it indicates the level at which the list is positioned. The first level is 0.                                                                                               |
+| `list-item`, `li`                   | `ordered`                          | `boolean` | Indicates if it is in an `ordered-list` or not.                                                                                                                                              |
+|                                     | `depth`                            | `number`  | In nested lists, it indicates the level at which the list is positioned. The first level is 0.                                                                                               |
+|                                     | `index`                            | `number`  | Represents the position of the list item within its current level. The first item at any level is considered 0.                                                                              |
 
-- `code`, `inline-code`, `block-code`:
-  - `language`: `string`。represent language. e.g: `js`, `sh`, `md` ....
-  - `languageOriginal`: `string`. It's typically in the form of `language-` followed by the language, for example, `language-js`, `language-sh`. Similar to the language parameter, but language provides a simpler representation.
-  - `inline`: `boolean`，`inline-code` or `block-code`
-  - `content`: `string`. A string which is text content of the code. (**v0.3.0+**)
-
-    ```vue
-    <!-- For example -->
-    <template>
-      <VueMarkdown :markdown="markdown">
-        <template #code="{ children, ...props}">
-          <MyCustomCodeBlock :code="props.content" :lang="props.language" />
-          <!-- Or -->
-          <code>
-            <component :is="children" />
-          </code>
-        </template>
-      </VueMarkdown>
-    </template>
-    ```
-
-
-- `th`, `td`, `tr`:
-  - `isHead`: `boolean`。Is it in `thead`.
-
-- `list`, `ol`, `ul`:
-  - `ordered`: `ordered-list` or not
-  - `depth`: In nested lists, it indicates the level at which the list is positioned. The first level is 0.
-
-- `list-item`, `li`:
-  - `ordered`: Is in `ordered-list` or not.
-  - `depth`: In nested lists, it indicates the level at which the list is positioned. The first level is 0.
-  - `index`: It represents the position of the list item within its current level. The first item at any level is considered 0.
 
 
 
 ## doc: attributes aliases
 Attribute aliases can be used in the configuration of both `scoped slot` and `customAttrs`. Generally, if you are using aliases for configuration or inserting slots, the alias configuration will take precedence over its corresponding HTML tag.
 
-- `heading`: `h1`, `h2`, `h3`, `h4`, `h5`, `h6`
-- `list`: `ol`, `ul`
-- `list-item`: `li`
-- `inline-code`: `code` which is inline
-- `block-code`: `code` which is block code in `pre` tag
+| Alias         | HTML Tags                          |
+| ------------- | ---------------------------------- |
+| `heading`     | `h1`, `h2`, `h3`, `h4`, `h5`, `h6` |
+| `list`        | `ol`, `ul`                         |
+| `list-item`   | `li`                               |
+| `inline-code` | `code` (inline)                    |
+| `block-code`  | `code` (block in `pre` tag)        |
 
+
+### doc: code content example
+```vue
+<!-- For example -->
+<template>
+   <VueMarkdown :markdown="markdown">
+     <template #code="{ children, ...props}">
+       <MyCustomCodeBlock :code="props.content" :lang="props.language" />
+       <!-- Or -->
+       <code>
+         <component :is="children" />
+       </code>
+     </template>
+   </VueMarkdown>
+</template>
+```
 
 ## Reference
 [react-markdown](https://github.com/remarkjs/react-markdown).
+
+## License
+MIT 
 
 
