@@ -58,16 +58,30 @@ $$
 </div>
 `)
 
-const customAttrs: CustomAttrs = {
-  heading: (node, combinedAttrs) => {
-    // if (node.children[0]?.type === 'text') {
-    //   return {
-    //     id: node.children[0].value.toLowerCase().replace(/\s/g, '-'),
-    //     ...combinedAttrs
-    //   }
-    // }
+// const customAttrs: CustomAttrs = {
+//   heading: (node, combinedAttrs) => {
+//     // if (node.children[0]?.type === 'text') {
+//     //   return {
+//     //     id: node.children[0].value.toLowerCase().replace(/\s/g, '-'),
+//     //     ...combinedAttrs
+//     //   }
+//     // }
 
-    return { level: 1, onClick: () => { console.log(123) } }
+//     return { level: 1, onClick: () => { console.log(123) } }
+//   }
+// }
+const customAttrs: CustomAttrs = {
+  h1: { 'class': ["heading"] },
+  h2: { 'class': ["heading"] },
+  a: (node, combinedAttrs) => {
+    if(
+      typeof node.properties.href === 'string' &&
+      node.properties.href.startsWith('https://www.google.com')
+    ){
+      return { target: '_blank', rel: "noopener noreferrer"}
+    } else {
+      return {}
+    }
   }
 }
 
@@ -82,6 +96,7 @@ const preset = {
 
 <template>
   <div>
+
     <VueMarkdown
       :markdown="markdown"
       :custom-attrs="customAttrs"
