@@ -279,7 +279,7 @@ const vueMarkdownImpl = defineComponent({
         /** all element name and custom aliases */
         const aliasList: AliasList = []
 
-        let attrs = {}
+        let attrs: Record<string, any> = {}
         const props: Record<string, any> = {}
         const thisContext = { ...context }
 
@@ -312,8 +312,8 @@ const vueMarkdownImpl = defineComponent({
                 break
               // TODO: maybe use <pre> instead for customizing from <pre> not <code> ?
               case 'code':
-                props.languageOriginal = Array.isArray(props['class'])
-                  ? props['class'].find(cls => cls.startsWith('language-'))
+                props.languageOriginal = Array.isArray(attrs['class'])
+                  ? attrs['class'].find(cls => cls.startsWith('language-'))
                   : ''
                 props.language = props.languageOriginal ? props.languageOriginal.replace('language-', '') : ''
                 props.inline = 'tagName' in parent && parent.tagName !== 'pre'
