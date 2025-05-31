@@ -8,7 +8,8 @@
     "prepare": "husky",
     "lint": "eslint",
     "build": "pnpm --filter @crazydos/vue-markdown build",
-    "stub": "pnpm --filter @crazydos/vue-markdown stub"
+    "stub": "pnpm --filter @crazydos/vue-markdown stub",
+    "play": "pnpm --filter playground dev"
   },
   "repository": "https://github.com/shunnNet/vue-markdown",
   "bugs": {
