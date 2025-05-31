@@ -14,7 +14,7 @@ import remarkRehype from 'remark-rehype'
 import rehypeSanitize, { defaultSchema, Options } from 'rehype-sanitize'
 import type { RootContent, Root, Element, Text } from 'hast'
 import type { Options as TRehypeOptions } from 'mdast-util-to-hast'
-import { html, find } from 'property-information'
+import { html, find, svg } from 'property-information'
 import deepmerge, { Options as DeepMergeOptions } from 'deepmerge'
 
 type Context = {
@@ -22,6 +22,7 @@ type Context = {
   listOrdered: boolean
   listItemIndex: number
   currentContext?: string
+  svg: boolean
 }
 
 type Attributes = Record<string, string>
@@ -287,14 +288,18 @@ const vueMarkdownImpl = defineComponent({
           case 'text':
             return [node.value]
 
-          case 'element':
+          case 'element': {
             aliasList.push(node.tagName)
             keyCounter[node.tagName] = node.tagName in keyCounter ? keyCounter[node.tagName] + 1 : 0
             props.key = `${node.tagName}-${keyCounter[node.tagName]}`
             node.properties = node.properties || {}
 
+            if (node.tagName === 'svg') {
+              thisContext.svg = true
+            }
+
             attrs = Object.entries(node.properties).reduce<Record<string, any>>((acc, [hastKey, value]) => {
-              const attrInfo = find(html, hastKey)
+              const attrInfo = find(thisContext.svg ? svg : html, hastKey)
               acc[attrInfo.attribute] = value
 
               return acc
@@ -364,6 +369,7 @@ const vueMarkdownImpl = defineComponent({
                 break
             }
             break
+          }
 
           default:
             return null
@@ -393,11 +399,10 @@ const vueMarkdownImpl = defineComponent({
     return () => {
       const mdast = processor.parse(props.markdown)
       const hast = processor.runSync(mdast) as Root
-
       return h(
         'div',
         attrs,
-        parseChildren(hast.children, { listDepth: -1, listOrdered: false, listItemIndex: -1 }, hast),
+        parseChildren(hast.children, { listDepth: -1, listOrdered: false, listItemIndex: -1, svg: false }, hast),
       )
     }
   },
@@ -413,7 +418,7 @@ export const VueMarkdown: TVueMarkdown = vueMarkdownImpl as any
  * Copy from vue-router
  */
 export interface TVueMarkdown {
-  new (): {
+  new(): {
     $props: AllowedComponentProps &
       ComponentCustomProps &
       VNodeProps &
