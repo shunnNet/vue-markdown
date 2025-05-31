@@ -56,6 +56,12 @@ $$
 <div>
 <slot slot-name="header" value="123">I am slot</slot>
 </div>
+
+## Svg
+<svg viewBox="0 0 800 400" xmlns="http://www.w3.org/2000/svg">
+  <rect x="50" y="150" width="100" height="100" fill="#f0f0f0" stroke="#333" stroke-width="5"/>
+  <text x="100" y="200" text-anchor="middle" font-family="Arial" font-size="14">Input</text>
+</svg>
 `)
 
 // const customAttrs: CustomAttrs = {
