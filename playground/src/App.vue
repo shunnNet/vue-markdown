@@ -1,14 +1,16 @@
 <script setup lang="ts">
-import type { CustomAttrs } from '@crazydos/vue-markdown'
-import { VueMarkdown } from '@crazydos/vue-markdown'
-// import type { CustomAttrs } from '#lib'
-// import { VueMarkdown } from '#lib'
+// import type { CustomAttrs } from '@crazydos/vue-markdown'
+// import { VueMarkdown } from '@crazydos/vue-markdown'
+import type { CustomAttrs } from '#lib'
+import { VueMarkdown, VueMarkdownAsync } from '#lib'
 
+import rehypeShiki from '@shikijs/rehype'
 import rehypeKatex from 'rehype-katex'
 import rehypeRaw from 'rehype-raw'
 import remarkGfm from 'remark-gfm'
 import remarkMath from 'remark-math'
 import remarkToc from 'remark-toc'
+
 import { ref } from 'vue'
 import CodeBlock from './components/CodeBlock.vue'
 
@@ -82,6 +84,7 @@ $$
 const customAttrs: CustomAttrs = {
   h1: { class: ['heading'] },
   h2: { class: ['heading'] },
+
   a: (node) => {
     if (
       typeof node.properties.href === 'string'
@@ -105,6 +108,24 @@ const preset = {
 
 <template>
   <div>
+    <Suspense>
+      <VueMarkdownAsync
+        :markdown="markdown"
+        :custom-attrs="customAttrs"
+        :remark-plugins="[preset, [remarkToc, { heading: 'structure' }]]"
+        :rehype-plugins="[rehypeRaw, rehypeKatex, rehypeShiki]"
+      >
+        <template #s-header="{ children: Children, ...attrs }">
+          <p v-bind="attrs">
+            <component :is="Children" />
+          </p>
+        </template>
+
+        <template #code="{ ...props }">
+          <CodeBlock :code="props.content" />
+        </template>
+      </VueMarkdownAsync>
+    </Suspense>
     <VueMarkdown
       :markdown="markdown"
       :custom-attrs="customAttrs"
