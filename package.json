@@ -3,14 +3,11 @@
   "type": "module",
   "version": "1.0.7",
   "description": "Vue component for rendering markdown with unified",
-  "main": "index.js",
-  "scripts": {
-    "prepare": "husky",
-    "lint": "eslint",
-    "build": "pnpm --filter @crazydos/vue-markdown build",
-    "stub": "pnpm --filter @crazydos/vue-markdown stub",
-    "play": "pnpm --filter playground dev"
+  "author": {
+    "name": "shunnNet",
+    "url": "https://github.com/shunnNet"
   },
+  "license": "MIT",
   "repository": "https://github.com/shunnNet/vue-markdown",
   "bugs": {
     "url": "https://github.com/shunnNet/vue-markdown/issues"
@@ -22,12 +19,18 @@
     "remark",
     "rehype"
   ],
-  "author": {
-    "name": "shunnNet",
-    "url": "https://github.com/shunnNet"
+  "main": "index.js",
+  "scripts": {
+    "prepare": "husky",
+    "lint": "eslint",
+    "lint:fix": "eslint --fix",
+    "lint:inspect": "eslint --inspect-config",
+    "build": "pnpm --filter @crazydos/vue-markdown build",
+    "stub": "pnpm --filter @crazydos/vue-markdown stub",
+    "play": "pnpm --filter playground dev"
   },
-  "license": "MIT",
   "devDependencies": {
+    "@antfu/eslint-config": "4.14.1",
     "@eslint/js": "^9.9.1",
     "@stylistic/eslint-plugin": "^2.6.4",
     "eslint-plugin-vue": "^9.27.0",

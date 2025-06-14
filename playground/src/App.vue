@@ -1,13 +1,14 @@
 <script setup lang="ts">
-import {VueMarkdown} from "@crazydos/vue-markdown"
-import type {CustomAttrs} from "@crazydos/vue-markdown"
-import CodeBlock from "./components/CodeBlock.vue"
-import { ref }  from "vue"
-import remarkGfm from "remark-gfm"
-import rehypeRaw from "rehype-raw"
-import remarkMath from "remark-math"
-import rehypeKatex from "rehype-katex"
-import remarkToc from "remark-toc"
+import type { CustomAttrs } from '@crazydos/vue-markdown'
+import { VueMarkdown } from '@crazydos/vue-markdown'
+
+import rehypeKatex from 'rehype-katex'
+import rehypeRaw from 'rehype-raw'
+import remarkGfm from 'remark-gfm'
+import remarkMath from 'remark-math'
+import remarkToc from 'remark-toc'
+import { ref } from 'vue'
+import CodeBlock from './components/CodeBlock.vue'
 
 const markdown = ref(`# Markdown Test
 
@@ -77,48 +78,46 @@ $$
 //   }
 // }
 const customAttrs: CustomAttrs = {
-  h1: { 'class': ["heading"] },
-  h2: { 'class': ["heading"] },
-  a: (node, combinedAttrs) => {
-    if(
-      typeof node.properties.href === 'string' &&
-      node.properties.href.startsWith('https://www.google.com')
-    ){
-      return { target: '_blank', rel: "noopener noreferrer"}
-    } else {
+  h1: { class: ['heading'] },
+  h2: { class: ['heading'] },
+  a: (node) => {
+    if (
+      typeof node.properties.href === 'string'
+      && node.properties.href.startsWith('https://www.google.com')
+    ) {
+      return { target: '_blank', rel: 'noopener noreferrer' }
+    }
+    else {
       return {}
     }
-  }
+  },
 }
 
 const preset = {
   plugins: [
     remarkGfm,
     remarkMath,
-  ]
+  ],
 }
-
 </script>
 
 <template>
   <div>
-
     <VueMarkdown
       :markdown="markdown"
       :custom-attrs="customAttrs"
-      :remark-plugins="[preset, [remarkToc, {heading: 'structure'}]]"
+      :remark-plugins="[preset, [remarkToc, { heading: 'structure' }]]"
       :rehype-plugins="[rehypeRaw, rehypeKatex]"
     >
-      <template v-slot:s-header="{ children: Children, ...attrs }">
+      <template #s-header="{ children: Children, ...attrs }">
         <p v-bind="attrs">
-          <component :is="Children"  />
+          <component :is="Children" />
         </p>
       </template>
 
-      <template #code="{ children, ...props}">
+      <template #code="{ ...props }">
         <CodeBlock :code="props.content" />
       </template>
-
     </VueMarkdown>
   </div>
 </template>

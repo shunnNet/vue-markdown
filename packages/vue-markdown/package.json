@@ -3,20 +3,11 @@
   "type": "module",
   "version": "1.0.7",
   "description": "Vue component for rendering markdown with unified",
-  "main": "dist/index.cjs",
-  "module": "dist/index.mjs",
-  "types": "dist/index.d.ts",
-  "exports": {
-    ".": {
-      "import": "./dist/index.mjs",
-      "require": "./dist/index.cjs",
-      "types": "./dist/index.d.ts"
-    }
+  "author": {
+    "name": "shunnNet",
+    "url": "https://github.com/shunnNet"
   },
-  "scripts": {
-    "build": "unbuild",
-    "stub": "unbuild --stub"
-  },
+  "license": "MIT",
   "repository": "https://github.com/shunnNet/vue-markdown",
   "bugs": {
     "url": "https://github.com/shunnNet/vue-markdown/issues"
@@ -28,19 +19,28 @@
     "remark",
     "rehype"
   ],
-  "author": {
-    "name": "shunnNet",
-    "url": "https://github.com/shunnNet"
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.cjs"
+    }
   },
-  "license": "MIT",
+  "main": "dist/index.cjs",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
   "engines": {
     "node": ">=20.0.0"
   },
-  "devDependencies": {
-    "@types/hast": "^3.0.4",
-    "@types/unist": "^3.0.3",
-    "mdast-util-to-hast": "^13.2.0",
-    "unbuild": "^2.0.0"
+  "scripts": {
+    "build": "unbuild",
+    "stub": "unbuild --stub"
+  },
+  "peerDependencies": {
+    "vue": "^3.0.0"
   },
   "dependencies": {
     "deepmerge": "^4.3.1",
@@ -50,10 +50,10 @@
     "remark-rehype": "^11.1.1",
     "unified": "^11.0.5"
   },
-  "peerDependencies": {
-    "vue": "^3.0.0"
-  },
-  "files": [
-    "dist"
-  ]
+  "devDependencies": {
+    "@types/hast": "^3.0.4",
+    "@types/unist": "^3.0.3",
+    "mdast-util-to-hast": "^13.2.0",
+    "unbuild": "^2.0.0"
+  }
 }

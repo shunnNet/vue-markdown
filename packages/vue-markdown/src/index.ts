@@ -1,21 +1,26 @@
-import {
-  defineComponent,
-  VNodeArrayChildren,
-  h,
-  PropType,
+import type { Options as DeepMergeOptions } from 'deepmerge'
+import type { Element, Root, RootContent, Text } from 'hast'
+import type { Options as TRehypeOptions } from 'mdast-util-to-hast'
+import type { Options } from 'rehype-sanitize'
+import type { PluggableList } from 'unified'
+import type {
   AllowedComponentProps,
   ComponentCustomProps,
-  VNodeProps,
+  PropType,
   VNode,
+  VNodeArrayChildren,
+  VNodeProps,
 } from 'vue'
-import { unified, PluggableList } from 'unified'
+import deepmerge from 'deepmerge'
+import { find, html, svg } from 'property-information'
+import rehypeSanitize, { defaultSchema } from 'rehype-sanitize'
 import remarkParse from 'remark-parse'
 import remarkRehype from 'remark-rehype'
-import rehypeSanitize, { defaultSchema, Options } from 'rehype-sanitize'
-import type { RootContent, Root, Element, Text } from 'hast'
-import type { Options as TRehypeOptions } from 'mdast-util-to-hast'
-import { html, find, svg } from 'property-information'
-import deepmerge, { Options as DeepMergeOptions } from 'deepmerge'
+import { unified } from 'unified'
+import {
+  defineComponent,
+  h,
+} from 'vue'
 
 type Context = {
   listDepth: number
@@ -78,8 +83,8 @@ type CustomAttrsFunctionValue<T> = (
   combinedAttrs: T | Attributes
 ) => Record<string, unknown>
 
-type CustomAttrsValue<T extends Record<string, unknown> = Record<string, unknown>> =
-  CustomAttrsObjectResult | CustomAttrsFunctionValue<T>
+type CustomAttrsValue<T extends Record<string, unknown> = Record<string, unknown>>
+  = CustomAttrsObjectResult | CustomAttrsFunctionValue<T>
 
 type TBasicHTMLTagNames = keyof Omit<
   HTMLElementTagNameMap,
@@ -88,12 +93,12 @@ type TBasicHTMLTagNames = keyof Omit<
 export type CustomAttrs = {
   [key in TBasicHTMLTagNames]?: CustomAttrsValue // << dynamic properties
 } & {
-  [key: string]: CustomAttrsValue |
-    CustomAttrsValue<THeadingProps> |
-    CustomAttrsValue<TListProps> |
-    CustomAttrsValue<TCodeProps> |
-    CustomAttrsValue<TTableProps> |
-    undefined
+  [key: string]: CustomAttrsValue
+    | CustomAttrsValue<THeadingProps>
+    | CustomAttrsValue<TListProps>
+    | CustomAttrsValue<TCodeProps>
+    | CustomAttrsValue<TTableProps>
+    | undefined
   ['h1']?: CustomAttrsValue<THeadingProps> // << static properties
   ['h2']?: CustomAttrsValue<THeadingProps>
   ['h3']?: CustomAttrsValue<THeadingProps>
@@ -259,7 +264,11 @@ const vueMarkdownImpl = defineComponent({
           : [],
       )
 
-    const computeCustomAttrs = (node: Element, aliasList: AliasList, combinedAttrs: Attributes) => {
+    const computeCustomAttrs = (
+      node: Element,
+      aliasList: AliasList,
+      combinedAttrs: Attributes,
+    ): CustomAttrsObjectResult | undefined => {
       for (let i = aliasList.length - 1; i >= 0; i--) {
         const name = aliasList[i]
         if (name in props.customAttrs) {
@@ -312,13 +321,13 @@ const vueMarkdownImpl = defineComponent({
               case 'h4':
               case 'h5':
               case 'h6':
-                props.level = parseFloat(node.tagName.slice(1))
+                props.level = Number.parseFloat(node.tagName.slice(1))
                 aliasList.push('heading')
                 break
               // TODO: maybe use <pre> instead for customizing from <pre> not <code> ?
               case 'code':
-                props.languageOriginal = Array.isArray(attrs['class'])
-                  ? attrs['class'].find(cls => cls.startsWith('language-'))
+                props.languageOriginal = Array.isArray(attrs.class)
+                  ? attrs.class.find(cls => cls.startsWith('language-'))
                   : ''
                 props.language = props.languageOriginal ? props.languageOriginal.replace('language-', '') : ''
                 props.inline = 'tagName' in parent && parent.tagName !== 'pre'
@@ -361,7 +370,7 @@ const vueMarkdownImpl = defineComponent({
                 break
               case 'slot':
                 if (typeof node.properties['slot-name'] === 'string') {
-                  aliasList.push('s-' + node.properties['slot-name'])
+                  aliasList.push(`s-${node.properties['slot-name']}`)
                   delete node.properties['slot-name']
                 }
                 break
@@ -417,55 +426,55 @@ export const VueMarkdown: TVueMarkdown = vueMarkdownImpl as any
  *
  * Copy from vue-router
  */
-export interface TVueMarkdown {
+export type TVueMarkdown = {
   new(): {
-    $props: AllowedComponentProps &
-      ComponentCustomProps &
-      VNodeProps &
-      TVueMarkdownProps
+    $props: AllowedComponentProps
+      & ComponentCustomProps
+      & VNodeProps
+      & TVueMarkdownProps
 
     $slots: TBaseSlots & {
       /**
        * Customize `<h1>` tag
        * @scope `level` heading level
        * @scope `children` Functional component, child elements.
-       * */
+       */
       ['h1']?: THeadingSlot
       /**
        * Customize `<h2>` tag
        * @scope `level` heading level
        * @scope `children` Functional component, child elements.
-       * */
+       */
       ['h2']?: THeadingSlot
       /**
        * Customize `<h3>` tag
        * @scope `level` heading level
        * @scope `children` Functional component, child elements.
-       * */
+       */
       ['h3']?: THeadingSlot
       /**
        * Customize `<h4>` tag
        * @scope `level` heading level
        * @scope `children` Functional component, child elements.
-       * */
+       */
       ['h4']?: THeadingSlot
       /**
        * Customize `<h5>` tag
        * @scope `level` heading level
        * @scope `children` Functional component, child elements.
-       * */
+       */
       ['h5']?: THeadingSlot
       /**
        * Customize `<h6>` tag
        * @scope `level` heading level
        * @scope `children` Functional component, child elements.
-       * */
+       */
       ['h6']?: THeadingSlot
       /**
        * Customize `<h1>` ~ `<h6>`  tag
        * @scope `level` heading level
        * @scope `children` Functional component, child elements.
-       * */
+       */
       ['heading']?: THeadingSlot
 
       /**
@@ -475,7 +484,7 @@ export interface TVueMarkdown {
        * @scope `content` code content
        * @scope `inline` whether it is inline code
        * @scope `children` Functional component, child elements.
-       * */
+       */
       ['code']?: TCodeSlot
       /**
        * Customize inline code.
@@ -484,7 +493,7 @@ export interface TVueMarkdown {
        * @scope `content` code content
        * @scope `inline` whether it is inline code
        * @scope `children` Functional component, child elements.
-       * */
+       */
       ['inline-code']?: TCodeSlot
       /**
        * Customize block code.
@@ -493,7 +502,7 @@ export interface TVueMarkdown {
        * @scope `content` code content
        * @scope `inline` whether it is inline code
        * @scope `children` Functional component, child elements.
-       * */
+       */
       ['block-code']?: TCodeSlot
 
       /**
@@ -501,7 +510,7 @@ export interface TVueMarkdown {
        * @scope `depth` depth of the list
        * @scope `ordered` whether it is ordered list
        * @scope `children` Functional component, child elements.
-       * */
+       */
       ['ul']?: TListSlot
 
       /**
@@ -509,14 +518,14 @@ export interface TVueMarkdown {
        * @scope `depth` depth of the list
        * @scope `ordered` whether it is ordered list
        * @scope `children` Functional component, child elements.
-       * */
+       */
       ['ol']?: TListSlot
       /**
        * Customize ordered and unordered list
        * @scope `depth` depth of the list
        * @scope `ordered` whether it is ordered list
        * @scope `children` Functional component, child elements.
-       * */
+       */
       ['list']?: TListSlot
 
       /**
@@ -525,7 +534,7 @@ export interface TVueMarkdown {
        * @scope `ordered` whether it is ordered list
        * @scope `index` index of the list item
        * @scope `children` Functional component, child elements.
-       * */
+       */
       ['li']?: TListSlot
 
       /**
@@ -534,7 +543,7 @@ export interface TVueMarkdown {
        * @scope `ordered` whether it is ordered list
        * @scope `index` index of the list item
        * @scope `children` Functional component, child elements.
-       * */
+       */
       ['list-item']?: TListSlot
 
       /**
