@@ -10,6 +10,11 @@
 
     /* Bundler mode */
     "moduleResolution": "bundler",
+    "paths": {
+      "#lib": [
+        "../packages/vue-markdown/src/index"
+      ]
+    },
     "allowImportingTsExtensions": true,
 
     /* Linting */

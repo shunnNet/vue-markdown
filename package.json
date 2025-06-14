@@ -33,6 +33,7 @@
     "@antfu/eslint-config": "4.14.1",
     "@eslint/js": "^9.9.1",
     "@stylistic/eslint-plugin": "^2.6.4",
+    "@types/node": "^24.0.1",
     "eslint-plugin-vue": "^9.27.0",
     "husky": "^9.1.5",
     "lint-staged": "^15.2.9",

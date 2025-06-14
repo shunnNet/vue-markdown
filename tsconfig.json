@@ -11,11 +11,6 @@
     "module": "ESNext",
     /* Bundler mode */
     "moduleResolution": "bundler",
-    "paths": {
-      "@vue-use-x/modal": [
-        "./packages/modal/src/index.ts"
-      ]
-    },
     "resolveJsonModule": true,
     "allowImportingTsExtensions": true,
     /* Linting */

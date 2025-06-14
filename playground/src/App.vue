@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import type { CustomAttrs } from '@crazydos/vue-markdown'
 import { VueMarkdown } from '@crazydos/vue-markdown'
+// import type { CustomAttrs } from '#lib'
+// import { VueMarkdown } from '#lib'
 
 import rehypeKatex from 'rehype-katex'
 import rehypeRaw from 'rehype-raw'
