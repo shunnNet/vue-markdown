@@ -1,9 +1,10 @@
-import { mount } from '@vue/test-utils'
+import { flushPromises, mount } from '@vue/test-utils'
 import rehypeHighlight from 'rehype-highlight'
 import rehypeRaw from 'rehype-raw'
 import remarkGfm from 'remark-gfm'
 import { describe, expect, it } from 'vitest'
-import { VueMarkdown } from '../src'
+import { defineComponent, nextTick } from 'vue'
+import { VueMarkdown, VueMarkdownAsync } from '../src'
 
 describe('vueMarkdown', () => {
   it('should render markdown and HTML correctly', () => {
@@ -112,7 +113,6 @@ A note[^1]
           sanitizeOptions: {
             tagNames: [],
           },
-          // mergeOptions: Optional. Internally, we use the `deepmerge` package to combine `defaultSchema` and `sanitizeOptions`. You can adjust the merging behavior in `mergeOptions`.
           mergeOptions: {
             arrayMerge: (_, source) => {
               return source
@@ -122,5 +122,185 @@ A note[^1]
       },
     })
     expect(wrapper.html()).toMatchSnapshot()
+  })
+
+  it('should rerender when props.markdown changed', async () => {
+    const wrapper = mount(VueMarkdown, {
+      props: {
+        markdown: '# title 1',
+      },
+    })
+    expect(wrapper.text()).toContain('title 1')
+
+    wrapper.setProps({
+      markdown: '# title 2',
+    })
+    await nextTick()
+    expect(wrapper.text()).toContain('title 2')
+  })
+
+  it('should rerender when remarkPlugin changed', async () => {
+    const wrapper = mount(VueMarkdown, {
+      props: {
+        markdown: '- [ ] todo',
+      },
+    })
+    expect(wrapper.html()).not.toContain('type="checkbox"')
+
+    wrapper.setProps({
+      remarkPlugins: [remarkGfm],
+    })
+    await nextTick()
+    expect(wrapper.html()).toContain('type="checkbox"')
+  })
+
+  it('should rerender when rehypePlugin changed', async () => {
+    const wrapper = mount(VueMarkdown, {
+      props: {
+        markdown: '```js\nconst a = 1\n```',
+      },
+    })
+    expect(wrapper.html()).not.toContain('hljs')
+
+    wrapper.setProps({
+      rehypePlugins: [rehypeHighlight],
+    })
+    await nextTick()
+    expect(wrapper.html()).toContain('hljs')
+  })
+
+  it('should rerender when customAttrs changed', async () => {
+    const wrapper = mount(VueMarkdown, {
+      props: {
+        markdown: '# title',
+        customAttrs: {
+          h1: {
+            class: 'old-class',
+          },
+        },
+      },
+    })
+    expect(wrapper.html()).toContain('old-class')
+
+    wrapper.setProps({
+      customAttrs: {
+        h1: {
+          class: 'new-class',
+        },
+      },
+    })
+    await nextTick()
+    expect(wrapper.html()).toContain('new-class')
+  })
+
+  it('should rerender when rehypeOptions changed', async () => {
+    const wrapper = mount(VueMarkdown, {
+      props: {
+        markdown: 'A note[^1]\n\n[^1]: Big note.',
+        remarkPlugins: [remarkGfm],
+        rehypeOptions: {
+          clobberPrefix: 'old-',
+        },
+      },
+    })
+    expect(wrapper.html()).toContain('old-')
+
+    wrapper.setProps({
+      rehypeOptions: {
+        clobberPrefix: 'new-',
+      },
+    })
+    await nextTick()
+    expect(wrapper.html()).toContain('new-')
+  })
+
+  it('should rerender when sanitize changed', async () => {
+    const wrapper = mount(VueMarkdown, {
+      props: {
+        markdown: '<div>test</div><script>alert(1)</script>',
+        rehypePlugins: [rehypeRaw],
+        sanitize: true,
+      },
+    })
+    expect(wrapper.html()).not.toContain('<script>')
+
+    wrapper.setProps({
+      sanitize: false,
+    })
+    await nextTick()
+    expect(wrapper.html()).toContain('<script>')
+  })
+
+  it('should rerender when sanitizeOptions changed', async () => {
+    const wrapper = mount(VueMarkdown, {
+      props: {
+        markdown: '<div>test</div><iframe src="test"></iframe>',
+        rehypePlugins: [rehypeRaw],
+        sanitize: true,
+        sanitizeOptions: {
+          sanitizeOptions: {
+            tagNames: ['div'],
+          },
+        },
+      },
+    })
+    expect(wrapper.html()).toContain('<div>')
+    expect(wrapper.html()).not.toContain('<iframe>')
+
+    wrapper.setProps({
+      sanitizeOptions: {
+        sanitizeOptions: {
+          tagNames: ['div', 'iframe'],
+        },
+      },
+    })
+    await nextTick()
+    expect(wrapper.html()).toContain('<iframe>')
+  })
+
+  it('should rerender when mergeOptions changed', async () => {
+    const wrapper = mount(VueMarkdown, {
+      props: {
+        markdown: '<div>test</div><h1>test</h1>',
+        rehypePlugins: [rehypeRaw],
+        sanitize: true,
+        sanitizeOptions: {
+          sanitizeOptions: {
+            tagNames: ['div'],
+          },
+          mergeOptions: {
+            arrayMerge: (_, source) => source,
+          },
+        },
+      },
+    })
+    expect(wrapper.html()).toContain('<div>')
+    expect(wrapper.html()).not.toContain('<h1>')
+
+    wrapper.setProps({
+      sanitizeOptions: {
+        sanitizeOptions: {
+          tagNames: ['div'],
+        },
+        mergeOptions: {
+          arrayMerge: (target, source) => [...target, ...source],
+        },
+      },
+    })
+    await nextTick()
+    expect(wrapper.html()).toContain('<h1>')
+  })
+})
+
+describe('vueMarkdownAsync', () => {
+  it('should render markdown and HTML correctly', async () => {
+    // https://test-utils.vuejs.org/guide/advanced/async-suspense.html#Testing-asynchronous-setup
+    const component = defineComponent({
+      components: { VueMarkdownAsync },
+      template: '<Suspense><VueMarkdownAsync markdown="# title" /></Suspense >',
+    })
+    const wrapper = mount(component)
+    await flushPromises()
+    expect(wrapper.html()).toContain('title')
   })
 })
