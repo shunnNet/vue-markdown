@@ -1,7 +1,7 @@
 import { mount } from '@vue/test-utils'
 import remarkGfm from 'remark-gfm'
 import { describe, expect, it, vi } from 'vitest'
-import { VueMarkdown } from '../src/old'
+import { VueMarkdown } from '../src'
 
 describe('vueMarkdown customAttrs', () => {
   it('should append customAttrs when it is an object', () => {

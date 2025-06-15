@@ -2,7 +2,7 @@ import { mount } from '@vue/test-utils'
 import remarkGfm from 'remark-gfm'
 import { describe, expect, it } from 'vitest'
 import { h } from 'vue'
-import { VueMarkdown } from '../src/old'
+import { VueMarkdown } from '../src'
 
 describe('vueMarkdown slots', () => {
   it('should render h1 slot correctly', () => {

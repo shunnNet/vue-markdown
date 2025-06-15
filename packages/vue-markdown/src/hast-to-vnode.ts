@@ -44,12 +44,12 @@ function renderChildren(
         // TODO: Comment, Doctype, Raw.
         return null
       case 'element': {
-        const { attrs, context, aliasList } = getVNodeInfos(node, parent, ctx, keyCounter, customAttrs)
-
+        const { attrs, context, aliasList, vnodeProps } = getVNodeInfos(node, parent, ctx, keyCounter, customAttrs)
         for (let i = aliasList.length - 1; i >= 0; i--) {
           const targetSlot = slots[aliasList[i]]
           if (typeof targetSlot === 'function') {
             return targetSlot({
+              ...vnodeProps,
               ...attrs,
               children: () => renderChildren(node.children, context, node, slots, customAttrs),
             })
@@ -74,6 +74,7 @@ export function getVNodeInfos(
     attrs: Record<string, unknown>
     context: Context
     aliasList: AliasList
+    vnodeProps: Record<string, any>
   } {
   const aliasList: AliasList = []
 
@@ -161,13 +162,21 @@ export function getVNodeInfos(
       default:
         break
     }
-    attrs = computeAttrs(node, aliasList, { ...attrs, ...vnodeProps }, customAttrs)
+
+    attrs = computeAttrs(
+      node,
+      aliasList,
+      vnodeProps,
+      { ...attrs } as Attributes, // TODO: fix this
+      customAttrs,
+    )
   }
 
   return {
     attrs,
     context: ctx,
     aliasList,
+    vnodeProps,
   }
 }
 
@@ -182,19 +191,21 @@ export function getVNodeInfos(
 function computeAttrs(
   node: Element,
   aliasList: AliasList,
+  vnodeProps: Record<string, any>,
   attrs: Attributes,
   customAttrs: CustomAttrs,
 ): CustomAttrsObjectResult {
-  let result: CustomAttrsObjectResult = {
+  const result: CustomAttrsObjectResult = {
     ...attrs,
   }
   for (let i = aliasList.length - 1; i >= 0; i--) {
     const name = aliasList[i]
+    // console.log(Object.keys(customAttrs))
     if (name in customAttrs) {
       const customAttr = customAttrs[name]
-      result = {
+      return {
         ...result,
-        ...(typeof customAttr === 'function' ? customAttr(node, attrs) : customAttr),
+        ...(typeof customAttr === 'function' ? customAttr(node, { ...attrs, ...vnodeProps }) : customAttr),
       }
     }
   }

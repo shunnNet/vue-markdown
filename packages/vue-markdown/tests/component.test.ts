@@ -3,7 +3,7 @@ import rehypeHighlight from 'rehype-highlight'
 import rehypeRaw from 'rehype-raw'
 import remarkGfm from 'remark-gfm'
 import { describe, expect, it } from 'vitest'
-import { VueMarkdown } from '../src/old'
+import { VueMarkdown } from '../src'
 
 describe('vueMarkdown', () => {
   it('should render markdown and HTML correctly', () => {

@@ -3,6 +3,8 @@ import type { Root as MdastRoot } from 'mdast'
 import type { Options as TRehypeOptions } from 'mdast-util-to-hast'
 import type { ComputedRef, MaybeRefOrGetter } from 'vue'
 import type { SanitizeOptions } from './types'
+import deepmerge from 'deepmerge'
+import rehypeSanitize, { defaultSchema } from 'rehype-sanitize'
 import remarkParse from 'remark-parse'
 import remarkRehype from 'remark-rehype'
 import { type PluggableList, type Processor, unified } from 'unified'
@@ -40,4 +42,18 @@ export function createProcessor(options?: {
     .use(options?.prePlugins ?? [])
     .use(remarkRehype, { allowDangerousHtml: true, ...(options?.rehypeOptions || {}) })
     .use(options?.rehypePlugins ?? [])
+    .use(
+      options?.sanitize
+        ? [
+            [
+              rehypeSanitize,
+              deepmerge(
+                defaultSchema,
+                options?.sanitizeOptions?.sanitizeOptions || {},
+                options?.sanitizeOptions?.mergeOptions || {},
+              ),
+            ],
+          ]
+        : [],
+    )
 }
