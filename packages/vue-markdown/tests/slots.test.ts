@@ -10,6 +10,7 @@ describe('vueMarkdown slots', () => {
       props: {
         markdown: '# title',
       },
+      // @ts-expect-error TODO: fix this
       slots: {
         h1(scope) {
           return h('h1', { 'class': 'custom-h1', 'data-level': scope.level }, scope.children())
@@ -24,6 +25,7 @@ describe('vueMarkdown slots', () => {
       props: {
         markdown: '## title',
       },
+      // @ts-expect-error TODO: fix this
       slots: {
         heading(scope) {
           return h(`h${scope.level}`, { 'class': 'custom-heading', 'data-level': scope.level }, scope.children())
@@ -38,6 +40,7 @@ describe('vueMarkdown slots', () => {
       props: {
         markdown: '```js\nconst hello = "world"\n```',
       },
+      // @ts-expect-error TODO: fix this
       slots: {
         code(scope) {
           return h('code', {
@@ -58,6 +61,7 @@ describe('vueMarkdown slots', () => {
       props: {
         markdown: '- list item 1\n- list item 2',
       },
+      // @ts-expect-error TODO: fix this
       slots: {
         'list': (scope) => {
           return h('ul', {
@@ -88,6 +92,7 @@ describe('vueMarkdown slots', () => {
 | cell 1   | cell 2   |`,
         remarkPlugins: [remarkGfm],
       },
+      // @ts-expect-error TODO: fix this
       slots: {
         th(scope) {
           return h('th', {
@@ -111,6 +116,7 @@ describe('vueMarkdown slots', () => {
       props: {
         markdown: '`const hello = "world"`',
       },
+      // @ts-expect-error TODO: fix this
       slots: {
         'inline-code': (scope) => {
           return h('code', {
@@ -128,6 +134,7 @@ describe('vueMarkdown slots', () => {
       props: {
         markdown: '```js\nconst hello = "world"\n```',
       },
+      // @ts-expect-error TODO: fix this
       slots: {
         'block-code': (scope) => {
           return h('code', {
