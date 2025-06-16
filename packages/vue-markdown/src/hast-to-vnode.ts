@@ -24,7 +24,7 @@ export function render(
 }
 
 function renderChildren(
-  nodeList: RootContent[],
+  nodeList: (RootContent | Root)[],
   ctx: Context,
   parent: Element | Root,
   slots: Slots,
@@ -40,6 +40,10 @@ function renderChildren(
         return node.value
       case 'raw':
         return node.value
+      // Note: targeting libs like `@shikijs/rehype` which return `root` node.
+      // This may be abnormal. keep track of this.
+      case 'root':
+        return renderChildren(node.children, ctx, parent, slots, customAttrs)
       case 'element': {
         const { attrs, context, aliasList, vnodeProps } = getVNodeInfos(node, parent, ctx, keyCounter, customAttrs)
         for (let i = aliasList.length - 1; i >= 0; i--) {
