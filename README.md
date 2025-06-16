@@ -18,13 +18,14 @@ And is referenced from [`react-markdown`](https://github.com/remarkjs/react-mark
   - [Usages](#usages)
     - [Basic](#basic)
     - [Rendering `GFM`](#rendering-gfm)
+    - [Async Plugin](#async-plugin)
     - [Custom attributes](#custom-attributes)
     - [Customize tag rendering with scoped slot](#customize-tag-rendering-with-scoped-slot)
       - [re-render issue](#re-render-issue)
     - [Use `<slot>` in markdown](#use-slot-in-markdown)
     - [Security](#security)
   - [Documentation](#documentation)
-    - [`<VueMarkdown>` Props](#vuemarkdown-props)
+    - [`<VueMarkdown>` \& `<VueMarkdownAsync>` Props](#vuemarkdown--vuemarkdownasync-props)
     - [`scoped slot` and `custom attrs`](#scoped-slot-and-custom-attrs)
     - [Attributes aliases](#attributes-aliases)
     - [Code content example](#code-content-example)
@@ -121,8 +122,8 @@ You can pass markdown content through the `markdown` prop.
 
 ```vue
 <script setup lang="ts">
-import { ref } from 'vue'
 import { VueMarkdown } from '@crazydos/vue-markdown'
+import { ref } from 'vue'
 
 const markdown = ref('## Hello World')
 </script>
@@ -145,9 +146,9 @@ npm install remark-gfm
 
 ```vue
 <script setup lang="ts">
-import { ref } from 'vue'
 import { VueMarkdown } from '@crazydos/vue-markdown'
 import remarkGfm from 'remark-gfm'
+import { ref } from 'vue'
 
 const markdown = ref(`## Hello World
 
@@ -162,13 +163,34 @@ const markdown = ref(`## Hello World
 </template>
 ```
 
+### Async Plugin
+> [!NOTE]
+> Support from v2+
+
+`@crazydos/vue-markdown` supports using Unified async plugins (e.g. [@shiki/rehype](https://shiki.matsu.io/packages/rehype)). When using an async plugin, you must use `<VueMarkdownAsync>` and wrap it with `<Suspense>` to correctly render the content. `<VueMarkdownAsync>` shares the same interface as `<VueMarkdown>`, including the same props and slots.
+
+```vue
+<script setup lang="ts">
+import rehypeShiki from '@shikijs/rehype'
+</script>
+
+<template>
+  <Suspense>
+    <VueMarkdownAsync
+      :markdown="markdown"
+      :rehype-plugins="[rehypeShiki]"
+    />
+  </Suspense>
+</template>
+```
+
 ### Custom attributes
 You can customize tags for individual HTML elements, for example, by adding default classes or setting attributes like `target`, `rel`, `lazyload`, etc. The customAttrs will be passed into Vue's `h` function, so it will have the same effect as passing attributes to a `h`. Please refer to [Vue's official documentation](https://vuejs.org/guide/extras/render-function.html) to understand the effects of different data types when passed to the `h` function.
 
 ```vue
 <script setup lang="ts">
+import { type CustomAttrs, VueMarkdown } from '@crazydos/vue-markdown'
 import { ref } from 'vue'
-import { VueMarkdown, { type CustomAttrs } } from '@crazydos/vue-markdown'
 
 const markdown = ref(`
 # Hello world
@@ -181,9 +203,9 @@ const markdown = ref(`
 
 const customAttrs: CustomAttrs = {
   // use html tag name as key
-  h1: { 'class': ["heading"] },
-  h2: { 'class': ["heading"] },
-  a: { target: '_blank', rel: "noopener noreferrer" }
+  h1: { class: ['heading'] },
+  h2: { class: ['heading'] },
+  a: { target: '_blank', rel: 'noopener noreferrer' }
 }
 </script>
 
@@ -288,7 +310,7 @@ Additionally, similarly, the scoped slot also provides the same HTML tag alias a
 ```vue
 <template>
   <VueMarkdown
-    :markdown="`
+    markdown="
   # hello world
 
   ## hello world
@@ -300,10 +322,17 @@ Additionally, similarly, the scoped slot also provides the same HTML tag alias a
   ##### hello world
 
   ###### hello world
-  `"
+  "
   >
-    <template #heading="{ children, level, key, ...props }">
-      <MyCustomHeading :level="level" :key="key">
+    <template
+      #heading="{
+        children,
+        level,
+        key,
+      // ...props
+      }"
+    >
+      <MyCustomHeading :key="key" :level="level">
         <Component :is="children" />
       </MyCustomHeading>
     </template>
@@ -335,9 +364,9 @@ Currently, it does not support Vue template syntax like `v-bind` (supporting thi
 
 ```vue
 <script setup lang="ts">
-import { ref } from 'vue'
 import { VueMarkdown } from '@crazydos/vue-markdown'
 import remarkRaw from 'rehype-raw'
+import { ref } from 'vue'
 
 const markdown = ref(`
 ## Hello Slot
@@ -349,12 +378,10 @@ const markdown = ref(`
 <template>
   <!-- simple usage -->
   <VueMarkdown :markdown="markdown" :rehype-plugins="[remarkRaw]" :sanitize="false">
-
     <!-- use 's-' + 'slot-name' -->
     <template #s-custom="{ msg }">
       <span> {{ msg }} </span>
     </template>
-
   </VueMarkdown>
 </template>
 ```
@@ -368,8 +395,8 @@ Here's an example configuration that prevents the rendering of all HTML tags, di
 
 ```vue
 <script setup lang="ts">
-import { ref } from 'vue'
 import VueMarkdown, { SanitizeOptions } from '@crazydos/vue-markdown'
+import { ref } from 'vue'
 
 const sanitizeOption: SanitizeOptions = {
   // Please pass the parameters of rehype-sanitize into the sanitizeOptions:
@@ -385,6 +412,7 @@ const sanitizeOption: SanitizeOptions = {
   },
 }
 </script>
+
 <template>
   <VueMarkdown
     :markdown="content"
@@ -393,12 +421,12 @@ const sanitizeOption: SanitizeOptions = {
     :rehype-plugins="[rehypeRaw]"
     :sanitize-options="sanitizeOption"
     sanitize
-  ></VueMarkdown>
+  />
 </template>
 ```
 
 ## Documentation
-### `<VueMarkdown>` Props
+### `<VueMarkdown>` & `<VueMarkdownAsync>` Props
 
 | Prop              | Description                                                                                                                                                                                                                                                                                                                              | Type                           | Default                        | Example                                                                                                                     |
 | ----------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------ | ------------------------------ | --------------------------------------------------------------------------------------------------------------------------- |
@@ -444,15 +472,15 @@ Attribute aliases can be used in the configuration of both `scoped slot` and `cu
 ```vue
 <!-- For example -->
 <template>
-   <VueMarkdown :markdown="markdown">
-     <template #code="{ children, ...props}">
-       <MyCustomCodeBlock :code="props.content" :lang="props.language" />
-       <!-- Or -->
-       <code>
-         <component :is="children" />
-       </code>
-     </template>
-   </VueMarkdown>
+  <VueMarkdown :markdown="markdown">
+    <template #code="{ children, ...props }">
+      <MyCustomCodeBlock :code="props.content" :lang="props.language" />
+      <!-- Or -->
+      <code>
+        <component :is="children" />
+      </code>
+    </template>
+  </VueMarkdown>
 </template>
 ```
 
