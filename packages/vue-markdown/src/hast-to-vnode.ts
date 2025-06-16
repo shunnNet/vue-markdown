@@ -23,7 +23,7 @@ export function render(
   )
 }
 
-function renderChildren(
+export function renderChildren(
   nodeList: (RootContent | Root)[],
   ctx: Context,
   parent: Element | Root,
