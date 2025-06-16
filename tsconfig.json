@@ -1,31 +1,26 @@
 {
   "compilerOptions": {
     "target": "ES2022",
-    "useDefineForClassFields": true,
-    "module": "ESNext",
+    "jsx": "preserve",
     "lib": [
       "ES2022",
       "DOM",
       "DOM.Iterable"
     ],
-    "skipLibCheck": true,
+    "useDefineForClassFields": true,
+    "module": "ESNext",
     /* Bundler mode */
     "moduleResolution": "bundler",
-    "allowImportingTsExtensions": true,
     "resolveJsonModule": true,
-    "isolatedModules": true,
-    "noEmit": true,
-    "jsx": "preserve",
+    "allowImportingTsExtensions": true,
     /* Linting */
     "strict": true,
+    "noFallthroughCasesInSwitch": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "noFallthroughCasesInSwitch": true,
     "declaration": true,
-    "paths": {
-      "@vue-use-x/modal": [
-        "./packages/modal/src/index.ts"
-      ]
-    }
-  },
+    "noEmit": true,
+    "isolatedModules": true,
+    "skipLibCheck": true
+  }
 }

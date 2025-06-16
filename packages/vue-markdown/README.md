@@ -18,13 +18,14 @@ And is referenced from [`react-markdown`](https://github.com/remarkjs/react-mark
   - [Usages](#usages)
     - [Basic](#basic)
     - [Rendering `GFM`](#rendering-gfm)
+    - [Async Plugin](#async-plugin)
     - [Custom attributes](#custom-attributes)
     - [Customize tag rendering with scoped slot](#customize-tag-rendering-with-scoped-slot)
       - [re-render issue](#re-render-issue)
     - [Use `<slot>` in markdown](#use-slot-in-markdown)
     - [Security](#security)
   - [Documentation](#documentation)
-    - [`<VueMarkdown>` Props](#vuemarkdown-props)
+    - [`<VueMarkdown>` \& `<VueMarkdownAsync>` Props](#vuemarkdown--vuemarkdownasync-props)
     - [`scoped slot` and `custom attrs`](#scoped-slot-and-custom-attrs)
     - [Attributes aliases](#attributes-aliases)
     - [Code content example](#code-content-example)
@@ -36,8 +37,8 @@ And is referenced from [`react-markdown`](https://github.com/remarkjs/react-mark
 - 🪑 Supports rendering of additional elements (i.e: GFM: `tables`, `footnotes`, `task lists` etc.) through [remark](https://github.com/remarkjs/remark) and [rehype](https://github.com/rehypejs/rehype) plugins.
 - :hammer_and_wrench: Allows customization of tag attributes for markdown elements. (i.e: `class`, `target`, `rel` etc.)
 - 🛃 Enables customization of markdown element rendering through Vue `scoped slot`.
-- 🚀 Support rendering Vue component in markdown (need `rehype-raw`) 
-- 🛡️ Safely renders markdown to prevent harmful content by `rehype-sanitize` 
+- 🚀 Support rendering Vue component in markdown (need `rehype-raw`)
+- 🛡️ Safely renders markdown to prevent harmful content by `rehype-sanitize`
 - 📝 Fully typed with TypeScript for better developer experience and type safety.
 
 > [!TIP]
@@ -62,18 +63,18 @@ To migrate to v1.x, please make the following adjustments:
 ### Use named import
 v0.x:
 ```ts
-import VueMarkdown from "@crazydos/vue-markdown"
+import VueMarkdown from '@crazydos/vue-markdown'
 ```
 
 v1.x
 ```ts
-import { VueMarkdown } from "@crazydos/vue-markdown"
+import { VueMarkdown } from '@crazydos/vue-markdown'
 ```
 
 ### Slot prefix
-The syntax for the `<slot>` tag has changed. 
+The syntax for the `<slot>` tag has changed.
 
-Slot name now need add prefix `s-` as follows: 
+Slot name now need add prefix `s-` as follows:
 
 v0.x:
 ```html
@@ -96,8 +97,6 @@ v1.x:
   <CusomHeader></CusomHeader>
 </header>
 ```
-
-
 
 ## Install
 ```sh
@@ -123,8 +122,8 @@ You can pass markdown content through the `markdown` prop.
 
 ```vue
 <script setup lang="ts">
-import { ref } from 'vue'
 import { VueMarkdown } from '@crazydos/vue-markdown'
+import { ref } from 'vue'
 
 const markdown = ref('## Hello World')
 </script>
@@ -147,9 +146,9 @@ npm install remark-gfm
 
 ```vue
 <script setup lang="ts">
-import { ref } from 'vue'
 import { VueMarkdown } from '@crazydos/vue-markdown'
 import remarkGfm from 'remark-gfm'
+import { ref } from 'vue'
 
 const markdown = ref(`## Hello World
 
@@ -164,14 +163,34 @@ const markdown = ref(`## Hello World
 </template>
 ```
 
+### Async Plugin
+> [!NOTE]
+> Support from v2+
+
+`@crazydos/vue-markdown` supports using Unified async plugins (e.g. [@shiki/rehype](https://shiki.matsu.io/packages/rehype)). When using an async plugin, you must use `<VueMarkdownAsync>` and wrap it with `<Suspense>` to correctly render the content. `<VueMarkdownAsync>` shares the same interface as `<VueMarkdown>`, including the same props and slots.
+
+```vue
+<script setup lang="ts">
+import rehypeShiki from '@shikijs/rehype'
+</script>
+
+<template>
+  <Suspense>
+    <VueMarkdownAsync
+      :markdown="markdown"
+      :rehype-plugins="[rehypeShiki]"
+    />
+  </Suspense>
+</template>
+```
 
 ### Custom attributes
 You can customize tags for individual HTML elements, for example, by adding default classes or setting attributes like `target`, `rel`, `lazyload`, etc. The customAttrs will be passed into Vue's `h` function, so it will have the same effect as passing attributes to a `h`. Please refer to [Vue's official documentation](https://vuejs.org/guide/extras/render-function.html) to understand the effects of different data types when passed to the `h` function.
 
 ```vue
 <script setup lang="ts">
+import { type CustomAttrs, VueMarkdown } from '@crazydos/vue-markdown'
 import { ref } from 'vue'
-import { VueMarkdown, { type CustomAttrs } } from '@crazydos/vue-markdown'
 
 const markdown = ref(`
 # Hello world
@@ -183,10 +202,10 @@ const markdown = ref(`
 `)
 
 const customAttrs: CustomAttrs = {
-  // use html tag name as key 
-  h1: { 'class': ["heading"] },
-  h2: { 'class': ["heading"] },
-  a: { target: '_blank', rel: "noopener noreferrer" }
+  // use html tag name as key
+  h1: { class: ['heading'] },
+  h2: { class: ['heading'] },
+  a: { target: '_blank', rel: 'noopener noreferrer' }
 }
 </script>
 
@@ -199,15 +218,16 @@ const customAttrs: CustomAttrs = {
 
 ```ts
 const customAttrs: CustomAttrs = {
-  h1: { 'class': ["heading"] },
-  h2: { 'class': ["heading"] },
-  a: (node, combinedAttrs) => { 
+  h1: { class: ['heading'] },
+  h2: { class: ['heading'] },
+  a: (node, combinedAttrs) => {
     if (
-      typeof node.properties.href === 'string' &&
-      node.properties.href.startsWith('https://www.google.com')
-    ){
-      return { target: '_blank', rel: "noopener noreferrer"}
-    } else {
+      typeof node.properties.href === 'string'
+      && node.properties.href.startsWith('https://www.google.com')
+    ) {
+      return { target: '_blank', rel: 'noopener noreferrer' }
+    }
+    else {
       return {}
     }
   }
@@ -220,32 +240,32 @@ For example, if we want to configure it as follows:
 
 ```ts
 const customAttrs: CustomAttrs = {
-  h1: { 'class': ["heading"] },
-  h2: { 'class': ["heading"] },
+  h1: { class: ['heading'] },
+  h2: { class: ['heading'] },
 }
 ```
 
 This is equivalent to:
 ```ts
 const customAttrs: CustomAttrs = {
-  heading: { class: ["heading"] }
+  heading: { class: ['heading'] }
 }
 ```
 
 It can also receive a function for configuration.
 ```ts
-// will set 
+// will set
 // class="heading heading-1" for h1
 // class="heading heading-2" for h2
 // .......
 const customAttrs: CustomAttrs = {
   heading: (node, combinedAttrs) => {
-    return { class: ["heading", `heading-${combinedAttrs.level}`] }
+    return { class: ['heading', `heading-${combinedAttrs.level}`] }
   }
 }
 ```
 
-Please refer to the [doc](#doc-scoped-slot-and-custom-attrs), check parameter the function can accept. 
+Please refer to the [doc](#doc-scoped-slot-and-custom-attrs), check parameter the function can accept.
 
 ### Customize tag rendering with scoped slot
 This feature is a bit more cumbersome in `Vue`. If `customAttrs` doesn't meet your needs, you can customize tags through a `scoped slot`.
@@ -270,7 +290,7 @@ The parameters received by the scoped slot are essentially the same. However, so
 ```html
 <VueMarkdown
   :markdown="`## title
-  
+
 - list 1
   - list 2
     - list 3
@@ -290,7 +310,7 @@ Additionally, similarly, the scoped slot also provides the same HTML tag alias a
 ```vue
 <template>
   <VueMarkdown
-    :markdown="`
+    markdown="
   # hello world
 
   ## hello world
@@ -302,10 +322,17 @@ Additionally, similarly, the scoped slot also provides the same HTML tag alias a
   ##### hello world
 
   ###### hello world
-  `"
+  "
   >
-    <template #heading="{ children, level, key, ...props }">
-      <MyCustomHeading :level="level" :key="key">
+    <template
+      #heading="{
+        children,
+        level,
+        key,
+      // ...props
+      }"
+    >
+      <MyCustomHeading :key="key" :level="level">
         <Component :is="children" />
       </MyCustomHeading>
     </template>
@@ -313,7 +340,7 @@ Additionally, similarly, the scoped slot also provides the same HTML tag alias a
 </template>
 ```
 
-For more, please refer to [scoped slot](#doc-scoped-slot-and-custom-attrs) 
+For more, please refer to [scoped slot](#doc-scoped-slot-and-custom-attrs)
 
 #### re-render issue
 I would recommend keeping the state in the parent component and then passing it down to the Custom Component. When your Markdown changes, especially when implementing an editor feature, the position of elements in the tree nodes can frequently change, causing the components within to be remounted intermittently, resetting their states (even with keys added).
@@ -324,7 +351,6 @@ You can use the `<slot>` syntax in Markdown, but you need to configure the follo
 1. setup `rehype-raw` plugins
 2. set `:sanitize="false"`
 
-
 ```sh
 npm install rehype-raw
 ```
@@ -333,14 +359,14 @@ In the following example, we write Vue-like slot syntax in Markdown and can inse
 
 Currently, it does not support Vue template syntax like `v-bind` (supporting this would be a bit more challenging).
 
-> [!WARNING] 
+> [!WARNING]
 > Before `v0.2.0`,please use `<slot name="custom" />` to specify slot name
 
 ```vue
 <script setup lang="ts">
-import { ref } from 'vue'
 import { VueMarkdown } from '@crazydos/vue-markdown'
 import remarkRaw from 'rehype-raw'
+import { ref } from 'vue'
 
 const markdown = ref(`
 ## Hello Slot
@@ -352,12 +378,10 @@ const markdown = ref(`
 <template>
   <!-- simple usage -->
   <VueMarkdown :markdown="markdown" :rehype-plugins="[remarkRaw]" :sanitize="false">
-    
     <!-- use 's-' + 'slot-name' -->
     <template #s-custom="{ msg }">
       <span> {{ msg }} </span>
     </template>
-
   </VueMarkdown>
 </template>
 ```
@@ -371,15 +395,15 @@ Here's an example configuration that prevents the rendering of all HTML tags, di
 
 ```vue
 <script setup lang="ts">
-import { ref } from 'vue'
 import VueMarkdown, { SanitizeOptions } from '@crazydos/vue-markdown'
+import { ref } from 'vue'
 
 const sanitizeOption: SanitizeOptions = {
   // Please pass the parameters of rehype-sanitize into the sanitizeOptions:
   sanitizeOptions: {
     tagNames: [],
   },
-  
+
   // mergeOptions: Optional. Internally, we use the `deepmerge` package to combine `defaultSchema` and `sanitizeOptions`. You can adjust the merging behavior in `mergeOptions`.
   mergeOptions: {
     arrayMerge: (target, source) => {
@@ -388,6 +412,7 @@ const sanitizeOption: SanitizeOptions = {
   },
 }
 </script>
+
 <template>
   <VueMarkdown
     :markdown="content"
@@ -396,12 +421,12 @@ const sanitizeOption: SanitizeOptions = {
     :rehype-plugins="[rehypeRaw]"
     :sanitize-options="sanitizeOption"
     sanitize
-  ></VueMarkdown>
+  />
 </template>
 ```
 
 ## Documentation
-### `<VueMarkdown>` Props
+### `<VueMarkdown>` & `<VueMarkdownAsync>` Props
 
 | Prop              | Description                                                                                                                                                                                                                                                                                                                              | Type                           | Default                        | Example                                                                                                                     |
 | ----------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------ | ------------------------------ | --------------------------------------------------------------------------------------------------------------------------- |
@@ -412,8 +437,6 @@ const sanitizeOption: SanitizeOptions = {
 | `sanitize`        | Whether to sanitize the HTML content. (use `rehype-sanitize`). You need to disable this option if you want to render `<slot>` in markdown content.                                                                                                                                                                                       | `boolean`                      | `false`                        |                                                                                                                             |
 | `sanitizeOptions` | Options for `rehype-sanitize`. see: https://github.com/syntax-tree/hast-util-sanitize#schema                                                                                                                                                                                                                                             | `SanitizeOptions`              | `{ allowDangerousHtml: true }` |                                                                                                                             |
 | `rehypeOptions`   | Options for `rehype-parse`. see: https://github.com/remarkjs/remark-rehype?tab=readme-ov-file#options                                                                                                                                                                                                                                    | `Omit<TRehypeOptions, 'file'>` | `{}`                           |                                                                                                                             |
-
-
 
 ### `scoped slot` and `custom attrs`
 In both scoped slots and `customAttrs`, you can receive additional parameters. Besides the HTML attributes that can be set in Markdown, `vue-markdown` also provides additional parameters.
@@ -445,20 +468,19 @@ Attribute aliases can be used in the configuration of both `scoped slot` and `cu
 | `inline-code` | `code` (inline)                    |
 | `block-code`  | `code` (block in `pre` tag)        |
 
-
 ### Code content example
 ```vue
 <!-- For example -->
 <template>
-   <VueMarkdown :markdown="markdown">
-     <template #code="{ children, ...props}">
-       <MyCustomCodeBlock :code="props.content" :lang="props.language" />
-       <!-- Or -->
-       <code>
-         <component :is="children" />
-       </code>
-     </template>
-   </VueMarkdown>
+  <VueMarkdown :markdown="markdown">
+    <template #code="{ children, ...props }">
+      <MyCustomCodeBlock :code="props.content" :lang="props.language" />
+      <!-- Or -->
+      <code>
+        <component :is="children" />
+      </code>
+    </template>
+  </VueMarkdown>
 </template>
 ```
 
@@ -466,6 +488,4 @@ Attribute aliases can be used in the configuration of both `scoped slot` and `cu
 [react-markdown](https://github.com/remarkjs/react-markdown).
 
 ## License
-MIT 
-
-
+MIT

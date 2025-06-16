@@ -1,17 +1,16 @@
 {
   "name": "@crazydos/vue-markdown",
   "type": "module",
-  "version": "1.0.7",
+  "version": "1.1.0",
   "description": "Vue component for rendering markdown with unified",
-  "main": "index.js",
-  "scripts": {
-    "prepare": "husky",
-    "lint": "eslint",
-    "build": "pnpm --filter @crazydos/vue-markdown build",
-    "stub": "pnpm --filter @crazydos/vue-markdown stub",
-    "play": "pnpm --filter playground dev"
+  "author": {
+    "name": "shunnNet",
+    "url": "https://github.com/shunnNet"
   },
+  "license": "MIT",
+  "homepage": "https://github.com/shunnNet/vue-markdown",
   "repository": "https://github.com/shunnNet/vue-markdown",
+  "issues": "https://github.com/shunnNet/vue-markdown/issues",
   "bugs": {
     "url": "https://github.com/shunnNet/vue-markdown/issues"
   },
@@ -22,18 +21,34 @@
     "remark",
     "rehype"
   ],
-  "author": {
-    "name": "shunnNet",
-    "url": "https://github.com/shunnNet"
+  "main": "index.js",
+  "scripts": {
+    "prepare": "husky",
+    "lint": "eslint",
+    "lint:fix": "eslint --fix",
+    "lint:inspect": "eslint --inspect-config",
+    "build": "pnpm --filter @crazydos/vue-markdown build",
+    "stub": "pnpm --filter @crazydos/vue-markdown stub",
+    "play": "pnpm --filter playground dev",
+    "test": "vitest"
   },
-  "license": "MIT",
   "devDependencies": {
+    "@antfu/eslint-config": "4.14.1",
     "@eslint/js": "^9.9.1",
     "@stylistic/eslint-plugin": "^2.6.4",
+    "@types/node": "^24.0.1",
+    "@typescript-eslint/parser": "8.34.0",
+    "@vue/test-utils": "^2.4.6",
+    "eslint": "9.22",
     "eslint-plugin-vue": "^9.27.0",
+    "happy-dom": "^18.0.1",
     "husky": "^9.1.5",
     "lint-staged": "^15.2.9",
+    "rehype-highlight": "^7.0.2",
+    "rehype-raw": "^7.0.0",
+    "remark-gfm": "^4.0.0",
     "typescript": "^5.3.3",
-    "typescript-eslint": "^8.2.0"
+    "typescript-eslint": "^8.2.0",
+    "vitest": "^3.2.3"
   }
 }

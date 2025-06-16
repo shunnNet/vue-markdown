@@ -1,13 +1,18 @@
 <script setup lang="ts">
-import {VueMarkdown} from "@crazydos/vue-markdown"
-import type {CustomAttrs} from "@crazydos/vue-markdown"
-import CodeBlock from "./components/CodeBlock.vue"
-import { ref }  from "vue"
-import remarkGfm from "remark-gfm"
-import rehypeRaw from "rehype-raw"
-import remarkMath from "remark-math"
-import rehypeKatex from "rehype-katex"
-import remarkToc from "remark-toc"
+// import type { CustomAttrs } from '@crazydos/vue-markdown'
+// import { VueMarkdown } from '@crazydos/vue-markdown'
+import type { CustomAttrs } from '#lib'
+import { VueMarkdown, VueMarkdownAsync } from '#lib'
+
+import rehypeShiki from '@shikijs/rehype'
+import rehypeKatex from 'rehype-katex'
+import rehypeRaw from 'rehype-raw'
+import remarkGfm from 'remark-gfm'
+import remarkMath from 'remark-math'
+import remarkToc from 'remark-toc'
+
+import { ref } from 'vue'
+import CodeBlock from './components/CodeBlock.vue'
 
 const markdown = ref(`# Markdown Test
 
@@ -62,6 +67,9 @@ $$
   <rect x="50" y="150" width="100" height="100" fill="#f0f0f0" stroke="#333" stroke-width="5"/>
   <text x="100" y="200" text-anchor="middle" font-family="Arial" font-size="14">Input</text>
 </svg>
+
+## Code
+This code \`console.log{:js}\` will be highlighted in \`<VueMarkdownAsync />{:html}\`.
 `)
 
 // const customAttrs: CustomAttrs = {
@@ -77,48 +85,78 @@ $$
 //   }
 // }
 const customAttrs: CustomAttrs = {
-  h1: { 'class': ["heading"] },
-  h2: { 'class': ["heading"] },
-  a: (node, combinedAttrs) => {
-    if(
-      typeof node.properties.href === 'string' &&
-      node.properties.href.startsWith('https://www.google.com')
-    ){
-      return { target: '_blank', rel: "noopener noreferrer"}
-    } else {
+  h1: { class: ['heading'] },
+  h2: { class: ['heading'] },
+
+  a: (node) => {
+    if (
+      typeof node.properties.href === 'string'
+      && node.properties.href.startsWith('https://www.google.com')
+    ) {
+      return { target: '_blank', rel: 'noopener noreferrer' }
+    }
+    else {
       return {}
     }
-  }
+  },
 }
 
 const preset = {
   plugins: [
     remarkGfm,
     remarkMath,
-  ]
+  ],
 }
-
 </script>
 
 <template>
   <div>
+    <Suspense>
+      <VueMarkdownAsync
+        :markdown="markdown"
+        :custom-attrs="customAttrs"
+        :remark-plugins="[preset, [remarkToc, { heading: 'structure' }]]"
+        :rehype-plugins="[
+          rehypeRaw,
+          rehypeKatex,
+          [
+            rehypeShiki,
+            {
+              // or `theme` for a single theme
+              themes: {
+                light: 'vitesse-light',
+                dark: 'vitesse-dark',
+              },
+              inline: 'tailing-curly-colon',
+            },
+          ]]"
+      >
+        <template #s-header="{ children: Children, ...attrs }">
+          <p v-bind="attrs">
+            <component :is="Children" />
+          </p>
+        </template>
 
+        <template #code="{ children }">
+          <component :is="children" />
+        </template>
+      </VueMarkdownAsync>
+    </Suspense>
     <VueMarkdown
       :markdown="markdown"
       :custom-attrs="customAttrs"
-      :remark-plugins="[preset, [remarkToc, {heading: 'structure'}]]"
+      :remark-plugins="[preset, [remarkToc, { heading: 'structure' }]]"
       :rehype-plugins="[rehypeRaw, rehypeKatex]"
     >
-      <template v-slot:s-header="{ children: Children, ...attrs }">
+      <template #s-header="{ children: Children, ...attrs }">
         <p v-bind="attrs">
-          <component :is="Children"  />
+          <component :is="Children" />
         </p>
       </template>
 
-      <template #code="{ children, ...props}">
+      <template #code="{ ...props }">
         <CodeBlock :code="props.content" />
       </template>
-
     </VueMarkdown>
   </div>
 </template>

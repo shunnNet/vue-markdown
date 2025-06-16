@@ -1,0 +1,76 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`vueMarkdown > should render markdown and HTML correctly 1`] = `
+"<div>
+  <h1>title</h1>
+  <p>hello world</p>
+  &lt;div&gt;test&lt;/div&gt;
+  &lt;!-- test --&gt;
+</div>"
+`;
+
+exports[`vueMarkdown > should render raw HTML when sanitize is false 1`] = `
+"<div>
+  <h1>title</h1>
+  <div>valid div</div>
+  <script>
+    alert('invalid script')
+  </script>
+  <iframe src="invalid-iframe"></iframe>
+</div>"
+`;
+
+exports[`vueMarkdown > should render with rehype plugin correctly 1`] = `
+"<div>
+  <h1>title</h1>
+  <pre><code class="hljs language-js"><span class="hljs-keyword">const</span> hello = <span class="hljs-string">'world'</span>
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(hello)
+</code></pre>
+</div>"
+`;
+
+exports[`vueMarkdown > should render with rehypeOptions correctly 1`] = `
+"<div>
+  <h1>title</h1>
+  <p>A note<sup><a href="#test-fn-1" id="test-fnref-1" data-footnote-ref="true" aria-describedby="footnote-label">1</a></sup></p>
+  <section data-footnotes="true" class="footnotes">
+    <h2 class="sr-only" id="footnote-label">Footnotes</h2>
+    <ol>
+      <li id="test-fn-1">
+        <p>Big note. <a href="#test-fnref-1" data-footnote-backref="" aria-label="Back to reference 1" class="data-footnote-backref">↩</a></p>
+      </li>
+    </ol>
+  </section>
+</div>"
+`;
+
+exports[`vueMarkdown > should render with remark plugin correctly 1`] = `
+"<div>
+  <h1>title</h1>
+  <ul class="contains-task-list">
+    <li class="task-list-item"><input type="checkbox" disabled=""> todo 1</li>
+    <li class="task-list-item"><input type="checkbox" checked="" disabled=""> todo 2</li>
+  </ul>
+  <table>
+    <thead>
+      <tr>
+        <th>header 1</th>
+        <th>header 2</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>cell 1</td>
+        <td>cell 2</td>
+      </tr>
+    </tbody>
+  </table>
+</div>"
+`;
+
+exports[`vueMarkdown > should render with sanitizeOptions1 correctly 1`] = `
+"<div>title
+  valid div
+
+</div>"
+`;

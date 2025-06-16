@@ -1,0 +1,78 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`vueMarkdown customAttrs > alias customAttrs > should apply heading alias to all headings 1`] = `
+"<div>
+  <h1 class="heading-custom">h1 title</h1>
+  <h2 class="heading-custom">h2 title</h2>
+  <h3 class="heading-custom">h3 title</h3>
+</div>"
+`;
+
+exports[`vueMarkdown customAttrs > alias customAttrs > should apply tag name customAttrs with higher priority than alias 1`] = `
+"<div>
+  <h1 class="heading-custom">h1 title</h1>
+  <h2 class="heading-custom">h2 title</h2>
+  <h3 class="heading-custom">h3 title</h3>
+</div>"
+`;
+
+exports[`vueMarkdown customAttrs > function customAttrs > should append class attribute 1`] = `
+"<div>
+  <h1 class="custom-title">title</h1>
+</div>"
+`;
+
+exports[`vueMarkdown customAttrs > function customAttrs > should append data attribute with level 1`] = `
+"<div>
+  <h1 data-level="1">title</h1>
+</div>"
+`;
+
+exports[`vueMarkdown customAttrs > function customAttrs > should append multiple attributes 1`] = `
+"<div>
+  <h1 class="custom-title" data-level="1">title</h1>
+</div>"
+`;
+
+exports[`vueMarkdown customAttrs > object customAttrs > should append class attribute 1`] = `
+"<div>
+  <h1 class="custom-title">title</h1>
+</div>"
+`;
+
+exports[`vueMarkdown customAttrs > object customAttrs > should append data attribute 1`] = `
+"<div>
+  <h1 data-test="test">title</h1>
+</div>"
+`;
+
+exports[`vueMarkdown customAttrs > object customAttrs > should append multiple attributes 1`] = `
+"<div>
+  <h1 class="custom-title" data-test="test">title</h1>
+</div>"
+`;
+
+exports[`vueMarkdown customAttrs > should append customAttrs when it is a function 1`] = `
+"<div>
+  <h1 class="custom-title" data-level="1">title</h1>
+</div>"
+`;
+
+exports[`vueMarkdown customAttrs > should append customAttrs when it is an object 1`] = `
+"<div>
+  <h1 class="custom-title" data-test="test">title</h1>
+</div>"
+`;
+
+exports[`vueMarkdown customAttrs > should apply alias customAttrs with higher priority than tag name 1`] = `
+"<div>
+  <h1 class="heading-custom">h1 title</h1>
+</div>"
+`;
+
+exports[`vueMarkdown customAttrs > should apply tag name customAttrs with higher priority than alias 1`] = ` "<div>
+  <h1 class="heading-custom">h1 title</h1>
+  <h2 class="heading-custom">h2 title</h2>
+  <h3 class="heading-custom">h3 title</h3>
+</div>"
+`;

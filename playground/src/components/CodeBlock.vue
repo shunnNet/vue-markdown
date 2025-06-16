@@ -3,11 +3,13 @@ defineProps({
   code: String,
 })
 </script>
+
 <template>
   <code class="code">
     {{ code }}
   </code>
 </template>
+
 <style>
 .code {
   padding: 20px;

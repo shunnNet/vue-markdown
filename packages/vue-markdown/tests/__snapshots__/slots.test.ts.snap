@@ -1,0 +1,60 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`vueMarkdown slots > should render block code slot correctly 1`] = `
+"<div><pre><code class="custom-block-code" data-language="js">const hello = "world"
+</code></pre>
+</div>"
+`;
+
+exports[`vueMarkdown slots > should render code slot correctly 1`] = `
+"<div><pre><code class="custom-code" data-language="js" data-inline="false" data-language-original="language-js" data-content="const hello = &quot;world&quot;
+">const hello = "world"
+</code></pre>
+</div>"
+`;
+
+exports[`vueMarkdown slots > should render h1 slot correctly 1`] = `
+"<div>
+  <h1 class="custom-h1" data-level="1">title</h1>
+</div>"
+`;
+
+exports[`vueMarkdown slots > should render heading slot correctly 1`] = `
+"<div>
+  <h2 class="custom-heading" data-level="2">title</h2>
+</div>"
+`;
+
+exports[`vueMarkdown slots > should render inline code slot correctly 1`] = `
+"<div>
+  <p><code class="custom-inline-code" data-language="">const hello = "world"</code></p>
+</div>"
+`;
+
+exports[`vueMarkdown slots > should render list slot correctly 1`] = `
+"<div>
+  <ul class="custom-list" data-depth="0" data-ordered="false">
+    <li class="custom-list-item" data-depth="0" data-ordered="false" data-index="0">list item 1</li>
+    <li class="custom-list-item" data-depth="0" data-ordered="false" data-index="0">list item 2</li>
+  </ul>
+</div>"
+`;
+
+exports[`vueMarkdown slots > should render table slot correctly 1`] = `
+"<div>
+  <table>
+    <thead>
+      <tr>
+        <th class="custom-th" data-head="true">header 1</th>
+        <th class="custom-th" data-head="true">header 2</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="custom-td" data-head="false">cell 1</td>
+        <td class="custom-td" data-head="false">cell 2</td>
+      </tr>
+    </tbody>
+  </table>
+</div>"
+`;

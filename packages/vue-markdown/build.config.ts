@@ -29,7 +29,6 @@ export default defineBuildConfig({
     'csstype',
     '@vue/reactivity',
     '@vue/shared',
-    'mdast',
     'vfile',
     'vfile-message',
   ],
