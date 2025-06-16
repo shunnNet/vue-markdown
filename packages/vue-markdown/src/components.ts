@@ -85,7 +85,7 @@ const vueMarkdownAsyncImpl = defineComponent({
       hast.value = await processor.value.run(mdast) as Root
     }
 
-    watch(() => [processor.value], process, { flush: 'sync' })
+    watch(() => [markdown.value, processor.value], process, { flush: 'sync' })
 
     await process()
 

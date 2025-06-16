@@ -313,4 +313,30 @@ describe('vueMarkdownAsync', () => {
     await flushPromises()
     expect(wrapper.html()).toContain('title')
   })
+
+  it('should rerender when props.markdown changed', async () => {
+    const component = defineComponent({
+      components: { VueMarkdownAsync },
+      template: '<Suspense><VueMarkdownAsync :markdown="markdown" /></Suspense >',
+      props: {
+        markdown: {
+          type: String,
+          default: '',
+        },
+      },
+    })
+    const wrapper = mount(component, {
+      props: {
+        markdown: '# title 1',
+      },
+    })
+    await flushPromises()
+    expect(wrapper.html()).toContain('title 1')
+
+    wrapper.setProps({
+      markdown: '# title 2',
+    })
+    await flushPromises()
+    expect(wrapper.html()).toContain('title 2')
+  })
 })
