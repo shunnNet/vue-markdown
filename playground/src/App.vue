@@ -67,6 +67,9 @@ $$
   <rect x="50" y="150" width="100" height="100" fill="#f0f0f0" stroke="#333" stroke-width="5"/>
   <text x="100" y="200" text-anchor="middle" font-family="Arial" font-size="14">Input</text>
 </svg>
+
+## Code
+This code \`console.log{:js}\` will be highlighted in \`<VueMarkdownAsync />{:html}\`.
 `)
 
 // const customAttrs: CustomAttrs = {
@@ -113,7 +116,20 @@ const preset = {
         :markdown="markdown"
         :custom-attrs="customAttrs"
         :remark-plugins="[preset, [remarkToc, { heading: 'structure' }]]"
-        :rehype-plugins="[rehypeRaw, rehypeKatex, rehypeShiki]"
+        :rehype-plugins="[
+          rehypeRaw,
+          rehypeKatex,
+          [
+            rehypeShiki,
+            {
+              // or `theme` for a single theme
+              themes: {
+                light: 'vitesse-light',
+                dark: 'vitesse-dark',
+              },
+              inline: 'tailing-curly-colon',
+            },
+          ]]"
       >
         <template #s-header="{ children: Children, ...attrs }">
           <p v-bind="attrs">
@@ -121,8 +137,8 @@ const preset = {
           </p>
         </template>
 
-        <template #code="{ ...props }">
-          <CodeBlock :code="props.content" />
+        <template #code="{ children }">
+          <component :is="children" />
         </template>
       </VueMarkdownAsync>
     </Suspense>
