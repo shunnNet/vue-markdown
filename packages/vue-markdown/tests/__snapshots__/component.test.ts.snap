@@ -4,8 +4,8 @@ exports[`vueMarkdown > should render markdown and HTML correctly 1`] = `
 "<div>
   <h1>title</h1>
   <p>hello world</p>
-  <!---->
-  <!---->
+  &lt;div&gt;test&lt;/div&gt;
+  &lt;!-- test --&gt;
 </div>"
 `;
 
@@ -65,13 +65,6 @@ exports[`vueMarkdown > should render with remark plugin correctly 1`] = `
       </tr>
     </tbody>
   </table>
-</div>"
-`;
-
-exports[`vueMarkdown > should render with sanitizeOptions correctly 1`] = `
-"<div>title
-  valid div
-
 </div>"
 `;
 

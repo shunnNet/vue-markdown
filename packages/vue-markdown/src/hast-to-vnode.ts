@@ -37,12 +37,9 @@ function renderChildren(
   return nodeList.map((node) => {
     switch (node.type) {
       case 'text':
-        return [node.value]
-      case 'comment':
-      case 'doctype':
+        return node.value
       case 'raw':
-        // TODO: Comment, Doctype, Raw.
-        return null
+        return node.value
       case 'element': {
         const { attrs, context, aliasList, vnodeProps } = getVNodeInfos(node, parent, ctx, keyCounter, customAttrs)
         for (let i = aliasList.length - 1; i >= 0; i--) {

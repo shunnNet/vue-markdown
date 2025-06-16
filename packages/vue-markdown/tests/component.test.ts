@@ -290,6 +290,16 @@ A note[^1]
     await nextTick()
     expect(wrapper.html()).toContain('<h1>')
   })
+
+  it('should render raw html text correctly', () => {
+    const wrapper = mount(VueMarkdown, {
+      props: {
+        markdown: '<div>test</div>',
+        sanitize: false,
+      },
+    })
+    expect(wrapper.html()).toContain('<div>&lt;div&gt;test&lt;/div&gt;</div>')
+  })
 })
 
 describe('vueMarkdownAsync', () => {
