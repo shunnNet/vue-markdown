@@ -1,14 +1,16 @@
 {
   "name": "@crazydos/vue-markdown",
   "type": "module",
-  "version": "1.0.7",
+  "version": "1.1.0",
   "description": "Vue component for rendering markdown with unified",
   "author": {
     "name": "shunnNet",
     "url": "https://github.com/shunnNet"
   },
   "license": "MIT",
+  "homepage": "https://github.com/shunnNet/vue-markdown",
   "repository": "https://github.com/shunnNet/vue-markdown",
+  "issues": "https://github.com/shunnNet/vue-markdown/issues",
   "bugs": {
     "url": "https://github.com/shunnNet/vue-markdown/issues"
   },
