@@ -10,6 +10,7 @@ And is referenced from [`react-markdown`](https://github.com/remarkjs/react-mark
 
 - [@crazydos/vue-markdown](#crazydosvue-markdown)
   - [Features](#features)
+  - [Used by](#used-by)
   - [Online example \& playground](#online-example--playground)
   - [Migration: for `v0.x` users:](#migration-for-v0x-users)
     - [Use named import](#use-named-import)
@@ -48,6 +49,9 @@ And is referenced from [`react-markdown`](https://github.com/remarkjs/react-mark
 <a href="https://buymeacoffee.com/shunnnet" target="_blank" rel="noopener noreferrer">
   <img width="150" src="https://cdn.buymeacoffee.com/buttons/v2/default-green.png" alt="Buy Me A Coffee" />
 </a>
+
+## Used by
+[![network dependents](https://dependents.info/shunnNet/vue-markdown/image)](https://dependents.info/shunnNet/vue-markdown)
 
 ## Online example & playground
 For more usage examples and detailed plugin configuration, please refer to the [usage examples on Stackblitz](https://stackblitz.com/edit/nuxt-starter-xvieezcs?file=pages%2Findex.vue).
