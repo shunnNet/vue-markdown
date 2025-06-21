@@ -1,6 +1,7 @@
 # @crazydos/vue-markdown
 [![npm version](https://img.shields.io/npm/v/@crazydos/vue-markdown.svg)](https://www.npmjs.com/package/@crazydos/vue-markdown)
 [![npm downloads](https://img.shields.io/npm/dm/@crazydos/vue-markdown.svg)](https://www.npmjs.com/package/@crazydos/vue-markdown)
+[![network dependents](https://dependents.info/shunnNet/vue-markdown/badge)](https://dependents.info/shunnNet/vue-markdown)
 [![License](https://img.shields.io/github/license/nuxt/nuxt.svg)](https://github.com/shunnNet/vue-markdown/blob/main/LICENSE)
 
 This is a package that provide Vue 3+ component to render markdown content with [`unified`](https://github.com/unifiedjs/unified) pipeline.
