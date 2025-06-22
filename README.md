@@ -20,6 +20,7 @@ And is referenced from [`react-markdown`](https://github.com/remarkjs/react-mark
   - [Usages](#usages)
     - [Basic](#basic)
     - [Rendering `GFM`](#rendering-gfm)
+    - [Rendering html](#rendering-html)
     - [Async Plugin](#async-plugin)
     - [Custom attributes](#custom-attributes)
     - [Customize tag rendering with scoped slot](#customize-tag-rendering-with-scoped-slot)
@@ -165,6 +166,34 @@ const markdown = ref(`## Hello World
 <template>
   <!-- simple usage -->
   <VueMarkdown :markdown="markdown" :remark-plugins="[remarkGfm]" />
+</template>
+```
+
+### Rendering html
+By default, `vue-markdown` outputs HTML as plain text.
+If you want to render HTML tags, you need to use the `rehype-raw` plugin.
+
+```sh
+npm install rehype-raw
+```
+
+```vue
+<script setup lang="ts">
+import { VueMarkdown } from '@crazydos/vue-markdown'
+import rehypeRaw from 'rehype-raw'
+import { ref } from 'vue'
+
+const markdown = ref(`
+<details>
+  <summary>Details</summary>
+  Something small enough to escape casual notice.
+</details>
+
+`)
+</script>
+
+<template>
+  <VueMarkdown :markdown="markdown" :rehype-plugins="[rehypeRaw]" />
 </template>
 ```
 
