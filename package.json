@@ -28,7 +28,7 @@
     "lint:fix": "eslint --fix",
     "lint:inspect": "eslint --inspect-config",
     "build": "pnpm --filter @crazydos/vue-markdown build",
-    "stub": "pnpm --filter @crazydos/vue-markdown stub",
+    "stub": "pnpm run -r --parallel stub",
     "play": "pnpm --filter playground dev",
     "test": "vitest",
     "release": "esno scripts/release.ts"
