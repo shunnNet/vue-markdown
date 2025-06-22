@@ -31,3 +31,5 @@ docs/.vitepress/dist
 docs/.vitepress/cache
 
 .temp
+
+packages/vue-markdown/README.md
