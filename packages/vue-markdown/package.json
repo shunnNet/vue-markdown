@@ -39,7 +39,8 @@
   },
   "scripts": {
     "build": "unbuild",
-    "stub": "unbuild --stub"
+    "stub": "unbuild --stub",
+    "release": "esno scripts/release.ts"
   },
   "peerDependencies": {
     "vue": "^3.0.0"
