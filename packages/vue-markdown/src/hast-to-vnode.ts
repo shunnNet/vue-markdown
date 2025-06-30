@@ -185,6 +185,7 @@ export function getVNodeInfos(
  * TODO:
  * @param node - hast node
  * @param aliasList - html tag list. The earlier alias has higher priority. ?
+ * @param vnodeProps - vnode props
  * @param attrs - attrs
  * @param customAttrs - custom attrs object
  * @returns attrs

@@ -212,7 +212,7 @@ import rehypeShiki from '@shikijs/rehype'
   <Suspense>
     <VueMarkdownAsync
       :markdown="markdown"
-      :rehype-plugins="[rehypeShiki]"
+      :rehype-plugins="[rehypeShiki, { theme: 'github-light' }]"
     />
   </Suspense>
 </template>
@@ -429,7 +429,7 @@ Here's an example configuration that prevents the rendering of all HTML tags, di
 
 ```vue
 <script setup lang="ts">
-import VueMarkdown, { SanitizeOptions } from '@crazydos/vue-markdown'
+import { type SanitizeOptions, VueMarkdown } from '@crazydos/vue-markdown'
 import { ref } from 'vue'
 
 const sanitizeOption: SanitizeOptions = {
