@@ -19,6 +19,7 @@ And is referenced from [`react-markdown`](https://github.com/remarkjs/react-mark
   - [Unified plugins version](#unified-plugins-version)
   - [Usages](#usages)
     - [Basic](#basic)
+    - [Add unified plugin](#add-unified-plugin)
     - [Rendering `GFM`](#rendering-gfm)
     - [Rendering html](#rendering-html)
     - [Async Plugin](#async-plugin)
@@ -136,6 +137,44 @@ const markdown = ref('## Hello World')
 
 <template>
   <VueMarkdown :markdown="markdown" />
+</template>
+```
+
+### Add unified plugin
+`vue-markdown` supports extension through [`unified`](https://github.com/unifiedjs/unified) plugins. To insert a `unified` plugin, you can use the corresponding options. `vue-markdown` also exports helper type to support this.
+
+```vue
+<script setup lang="ts">
+import { type PluggableList, VueMarkdown } from '@crazydos/vue-markdown'
+import { ref } from 'vue'
+
+const markdown = ref(`...`)
+
+const remarkPlugins: PluggableList = [
+  // ...
+]
+const rehypePlugins: PluggableList = [
+  // ...
+]
+</script>
+
+<template>
+  <!-- Example 1 -->
+  <VueMarkdown
+    :markdown="markdown"
+    :remark-plugins="remarkPlugins"
+    :rehype-plugins="rehypePlugins"
+  />
+  <!-- Example 2: Directly add plugins -->
+  <VueMarkdown
+    :markdown="markdown"
+    :remark-plugins="[
+      // ...
+    ]"
+    :rehype-plugins="[
+      // ...
+    ]"
+  />
 </template>
 ```
 
