@@ -1,7 +1,7 @@
 {
   "name": "@crazydos/vue-markdown",
   "type": "module",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "description": "Vue component for rendering markdown with unified",
   "author": {
     "name": "shunnNet",
