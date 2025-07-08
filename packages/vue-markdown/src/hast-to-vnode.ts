@@ -120,7 +120,7 @@ export function getVNodeInfos(
 
         // when tagName is code, it definitely has children and the first child is text
         // https://github.com/syntax-tree/mdast-util-to-hast/blob/main/lib/handlers/code.js
-        vnodeProps.content = (node.children[0] as unknown as Text).value
+        vnodeProps.content = (node.children[0] as unknown as Text)?.value ?? ''
 
         aliasList.push(vnodeProps.inline ? 'inline-code' : 'block-code')
         break
